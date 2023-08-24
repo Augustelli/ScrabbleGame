@@ -1,6 +1,8 @@
 import unittest
 from unittest.mock import patch, Mock
-from game.models import Tile, TilesBag, cantidad_de_fichas_por_letra, puntaje_por_letra, cantidad_letras
+from game.models import *
+import pdb
+
 
 tiles_testing = [Tile(letter, puntaje_por_letra[letter]) for letter, count in cantidad_de_fichas_por_letra.items() for _ in range(count)]
 
@@ -61,8 +63,67 @@ class TestBagTiles(unittest.TestCase):
             self.bag.put(tiles_to_put)
 
             mock_shuffle.assert_called_once()
-        self.assertEqual(len(self.bag.tiles), 101)      
+        self.assertEqual(len(self.bag.tiles), 101)
 
+
+class TestBoard(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.board = Board()
+
+    def test_get_tile(self):
+        tile = self.board.get_tile(7, 7)
+        self.assertIsInstance(tile, Cell)
+
+    def test_add_tile_empty_cell(self):
+        tile = Tile("A", 1)  # Suponiendo que tienes una clase Tile
+        result = self.board.add_tile(tile, 0, 0)
+        self.assertIsNone(result)
+
+    def test_add_tile_occupied_cell(self):
+        tile = Tile("B", 2)  # Suponiendo que tienes una clase Tile
+        self.board.add_tile(tile, 0, 0)
+        result = self.board.add_tile(tile, 0, 0)
+        self.assertEqual(result, "Celda ocupada")
+
+    def test_remove_tile_with_letter(self):
+        tile = Tile("C", 3)  # Suponiendo que tienes una clase Tile
+        self.board.add_tile(tile, 0, 0)
+        self.board.remove_tile(0, 0)
+        self.assertIsNone(self.board.get_tile(0, 0).letter)
+
+    def test_remove_tile_empty_cell(self):
+        result = self.board.remove_tile(3, 0)
+        self.assertEqual(result, "No hay ficha en la celda")
+
+
+class TestCells(unittest.TestCase):
+
+    def test_init(self):
+        cell = Cell(multiplier=2, multiplier_type='letter')
+        self.assertEqual(cell.multiplier,2)
+
+        self.assertEqual(cell.multiplier_type,'letter')
+        self.assertIsNone(cell.letter)
+        self.assertEqual(cell.calculate_value(),0)
+
+    def test_add_letter(self):
+        cell = Cell(multiplier=1, multiplier_type='')
+        letter = Tile(letter='p', value=3)
+        cell.add_letter(letter=letter)
+        self.assertEqual(cell.letter, letter)
+
+    def test_cell_value(self):
+        cell = Cell(multiplier=2, multiplier_type='letter')
+        letter = Tile(letter='p', value=3)
+        cell.add_letter(letter=letter)
+        self.assertEqual(cell.calculate_value(),6)
+
+    def test_cell_multiplier_word(self):
+        cell = Cell(multiplier=2, multiplier_type='word')
+        letter = Tile(letter='p', value=3)
+        cell.add_letter(letter=letter)
+        self.assertEqual(cell.calculate_value(),3)
 
 if __name__ == '__main__':
 

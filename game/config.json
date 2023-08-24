@@ -69,11 +69,11 @@
         "doble_palabra": "Fore.RED",
         "doble_letra": "Fore.GREEN"
     },
-    "multiplicadores": {
-        "triple_palabra": "x3p",
-        "doble_palabra": "x2p",
-        "triple_letra": "x3L",
-        "doble_letra": "x2L"
+    "multiplicadores_valores": {
+        "triple_word":3,
+        "doble_word": 2,
+        "triple_letter": 3,
+        "doble_letter": 2
     },
     "cantidad_multiplicadores": {
         "x3p": 8,
@@ -82,7 +82,7 @@
         "x2L": 24
     },
     "coordenadas_multiplicadores": {
-        "triple_palabra": [
+        "triple_word": [
             [
                 0,
                 0
@@ -116,7 +116,7 @@
                 14
             ]
         ],
-        "triple_letra": [
+        "triple_letter": [
             [
                 1,
                 5
@@ -166,7 +166,7 @@
                 9
             ]
         ],
-        "doble_palabra": [
+        "doble_word": [
             [
                 1,
                 1
@@ -236,7 +236,7 @@
                 7
             ]
         ],
-        "doble_letra": [
+        "doble_letter": [
             [
                 0,
                 3
