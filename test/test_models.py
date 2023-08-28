@@ -1,6 +1,7 @@
 import unittest
 from unittest.mock import patch, Mock
 from game.models import *
+from game.models import TilesBag
 from io import StringIO
 import sys
 import re
@@ -8,6 +9,7 @@ import pdb
 
 
 tiles_testing = [Tile(letter, puntaje_por_letra[letter]) for letter, count in cantidad_de_fichas_por_letra.items() for _ in range(count)]
+tile_bag_testing = TilesBag(tiles_testing)
 
 
 class TestTiles(unittest.TestCase):
@@ -224,6 +226,41 @@ class TestCells(unittest.TestCase):
         letter = Tile(letter='p', value=3)
         cell.add_letter(letter=letter)
         self.assertEqual(cell.calculate_value(),3)
+
+
+class TestPlayer(unittest.TestCase):
+
+    def setUp(self):
+        self.player = Player("Alice")
+        self.mock_tile_bag = Mock(spec=TilesBag)  
+        self.mock_tile_bag.tiles = tile_bag_testing
+        self.player.TileBag = self.mock_tile_bag  
+
+    # def test_get_tiles(self):
+    #     self.player.get_tiles(3)
+    #     self.assertEqual(len(self.player.tiles), 3)
+
+    def test_create_word_valid(self):
+        valid_tiles = [Tile("H",1), Tile("O",1), Tile("L",3), Tile("A",4)]
+        result = self.player.create_word(valid_tiles)
+        self.assertTrue(result)
+
+    def test_create_word_invalid(self):
+        invalid_tiles = [Tile("X", 10), Tile("Y",2), Tile("Z", 6)]
+        result = self.player.create_word(invalid_tiles)
+        self.assertEqual(result, "Palabra inválida")
+
+    # def test_put_tiles_on_board_horizontal(self):
+    #     self.player.get_tiles(5)
+    #     self.player.next_word = "hola"
+    #     self.player.put_tiles_on_board(self.player.next_word, 2, 3, "h")
+    #     self.assertEqual(len(self.player.tiles), 1)  # Se deben haber removido las fichas utilizadas
+
+    # def test_put_tiles_on_board_vertical(self):
+    #     self.player.get_tiles(5)
+    #     self.player.next_word = "hola"
+    #     self.player.put_tiles_on_board(self.player.next_word, 2, 3, "v")
+    #     self.assertEqual(len(self.player.tiles), 1)
 
 
 if __name__ == '__main__':

@@ -53,12 +53,6 @@ class Cell:
             return self.letter.value
 
 
-# Crear las celdas con los multiplicadores de config.json
-
-# Administrar las fichas disponibles para los jugadores
-# Da fichas a los jugadores y recibe fichar para intercambiar por otras
-
-
 class TilesBag:
     def __init__(self, tiles):
         self.tiles = list(tiles)
@@ -71,6 +65,7 @@ class TilesBag:
                 tiles_taken.append(self.tiles.pop())
         else:
             return "No hay suficientes fichas en la bolsa"  # Debe ser un raise
+        random.shuffle(self.tiles)
         return tiles_taken
 
     def put(self, tiles):
@@ -127,3 +122,30 @@ class Board():
             print("".join(formatted_row))
             print(Fore.GREEN + "+---------" * 15 + "+")
 
+
+class Player:
+    def __init__(self, name):
+        self.tiles = []
+        self.name = name
+        self.points = 0
+        self.next_word = ""
+
+    def get_tiles(self, quantity_tile):
+        self.tiles.extend(TilesBag.take(self, quantity_tile))
+
+    def get_tile_index(self, tile):
+        return self.tiles.index(tile)
+
+    def create_word(self, tiles):
+        self.next_word = "".join(tile.letter for tile in tiles)
+        valid_words = {'gato', 'perro', 'casa', 'ola', 'hola', 'chau', 'calle', 'chancho'}
+        if self.next_word.lower() in valid_words:
+            return True
+        else:
+            return 'Palabra inválida'
+
+    def get_player_tile_index(self, letter):
+        for tile in self.tiles:
+            if letter == tile.letter:
+                return self.tiles.index(tile)
+        return None
