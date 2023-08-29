@@ -76,6 +76,12 @@ class TilesBag:
 class Board():
     # La secuencia seria imprimir el tablero luego de haber hecho todas las acciones
 
+    def add_tile(self, tile, row, column):
+        if isinstance(self.board[row][column].letter, Tile):
+            return "Celda ocupada"
+        else:
+            self.board[row][column].letter = tile
+
     def __init__(self):
         self.board = [[Cell(1, "") for _ in range(15)] for _ in range(15)]
         init(autoreset=True)
@@ -84,12 +90,6 @@ class Board():
                 if i == 7 and j == 7:
                     self.board[i][j].add_letter = Tile("*", 0)
                 self.board[i][j] = Cell(multiplicadores_valores[tipo], tipo.split("_")[1])
-
-    def add_tile(self, tile, row, column):
-        if isinstance(self.board[row][column].letter, Tile):
-            return "Celda ocupada"
-        else:
-            self.board[row][column].letter = tile
 
     def get_tile(self, row, column):
         return self.board[row][column]
@@ -123,41 +123,23 @@ class Board():
             print(Fore.GREEN + "+---------" * 15 + "+")
 
 
-class Dictionary:
-
-    def __init__(self):
-        self.dictionary = set()
-        with open('game/dictionary.txt', 'r') as f:
-            for line in f:
-                self.dictionary.add(line.strip())
-
-    def is_valid_word(self, word):
-        if word.lower() in self.dictionary:
-            return True
-        else:
-            return False
-
-
-dict = Dictionary()
-
-
 class Player:
-
     def __init__(self, name):
         self.tiles = []
         self.name = name
         self.points = 0
         self.next_word = ""
 
-    def get_tiles(self, quantity_tile):
-        self.tiles.extend(TilesBag.take(self, quantity_tile))
+
 
     def get_tile_index(self, tile):
         return self.tiles.index(tile)
 
+
     def create_word(self, tiles):
         self.next_word = "".join(tile.letter for tile in tiles)
-        if self.next_word.lower() in dict.dictionary:
+        valid_words = {'gato', 'perro', 'casa', 'ola', 'hola', 'chau', 'calle', 'chancho'}
+        if self.next_word.lower() in valid_words:
             return True
         else:
             return 'Palabra inválida'
@@ -168,20 +150,14 @@ class Player:
                 return self.tiles.index(tile)
         return None
 
-    def put_tiles_on_board(self, row, column, direction):
-        if direction == "v":
-            for i in range(len(self.next_word)):
-                for letter in self.next_word:
-                    tile_index = self.get_player_tile_index(letter)
-                    tile = self.tiles[tile_index]
-                    pdb.set_trace()
-                    Board.add_tile(self, tile, row + i, column)
-                    self.tiles.pop(tile_index)
-        elif direction == "h":
-            for i in range(len(self.next_word)):
-                for letter in self.next_word:
-                    tile_index = self.get_player_tile_index(letter)
-                    tile = self.tiles[tile_index]
-                    Board.add_tile(self, tile, row, column + i)
-                    self.tiles.pop(tile_index)
-        self.next_word = ""
+
+class Dictionary():
+    
+    def __init__(self) -> None:
+        self.dictionary = set()
+        with open('game/dictionary.txt', 'r') as f:
+            for line in f:
+                self.dictionary.add(line.strip())
+                
+    def is_valid_word(self, word):
+        return word.lower() in self.dictionary

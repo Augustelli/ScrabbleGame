@@ -246,6 +246,25 @@ class TestDictionary(unittest.TestCase):
     def test_is_valid_word_invalid(self):
         self.assertFalse(self.dictionary.is_valid_word("xyz"))
         self.assertFalse(self.dictionary.is_valid_word("invalid"))
+        
+        
+class TestPlayer(unittest.TestCase):
+
+
+    def setUp(self):
+        self.player = Player("Augusto")
+        self.mock_board = Mock()
+
+
+    def test_create_word_valid(self):
+        valid_tiles = [Tile("H",1), Tile("O",1), Tile("L",3), Tile("A",4)]
+        result = self.player.create_word(valid_tiles)
+        self.assertTrue(result)
+
+    def test_create_word_invalid(self):
+        invalid_tiles = [Tile("X", 10), Tile("Y",2), Tile("Z", 6)]
+        result = self.player.create_word(invalid_tiles)
+        self.assertEqual(result, "Palabra inválida")
 
 
 if __name__ == '__main__':
