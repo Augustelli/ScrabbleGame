@@ -100,7 +100,6 @@ class Board():
         else:
             return "No hay ficha en la celda"
 
-    # El método funciona, pero no encuentro forma de testearlo correctamente.
     def print_board(self):
         print(Fore.GREEN + "+---------" * 15 + "+")
         for row in self.board:
@@ -123,6 +122,21 @@ class Board():
             print(Fore.GREEN + "+---------" * 15 + "+")
 
 
+class Dictionary():
+
+    def __init__(self) -> None:
+        self.dictionary = set()
+        with open('game/dictionary.txt', 'r') as f:
+            for line in f:
+                self.dictionary.add(line.strip())
+
+    def is_valid_word(self, word):
+        return word.lower() in self.dictionary
+
+
+dictionary = Dictionary()
+
+
 class Player:
     def __init__(self, name):
         self.tiles = []
@@ -130,16 +144,17 @@ class Player:
         self.points = 0
         self.next_word = ""
 
-
-
-    def get_tile_index(self, tile):
-        return self.tiles.index(tile)
-
+    def get_tile_from_tilebag(self, tilebag, count):
+        tiles_recived = tilebag.take(count)
+        if isinstance(tiles_recived, str):
+            return tiles_recived
+        else:
+            self.tiles.extend(tiles_recived)
 
     def create_word(self, tiles):
         self.next_word = "".join(tile.letter for tile in tiles)
-        valid_words = {'gato', 'perro', 'casa', 'ola', 'hola', 'chau', 'calle', 'chancho'}
-        if self.next_word.lower() in valid_words:
+        if self.next_word.lower() in dictionary.dictionary:
+            self.next_word = self.next_word
             return True
         else:
             return 'Palabra inválida'
@@ -150,14 +165,17 @@ class Player:
                 return self.tiles.index(tile)
         return None
 
-
-class Dictionary():
-    
-    def __init__(self) -> None:
-        self.dictionary = set()
-        with open('game/dictionary.txt', 'r') as f:
-            for line in f:
-                self.dictionary.add(line.strip())
-                
-    def is_valid_word(self, word):
-        return word.lower() in self.dictionary
+    def put_tiles_on_board(self, row, column, direction, board):
+        if direction == "v":
+            for i, letter in enumerate(self.next_word):
+                tile_index = self.get_player_tile_index(letter.upper())
+                tile_to_add = self.tiles[tile_index]
+                board.add_tile(tile_to_add, row + i, column)
+                self.tiles.pop(tile_index)
+        elif direction == "h":
+            for i, letter in enumerate(self.next_word):
+                tile_index = self.get_player_tile_index(letter.upper())
+                tile_to_add = self.tiles[tile_index]
+                board.add_tile(tile_to_add, row, column + i)
+                self.tiles.pop(tile_index)
+        self.next_word = ""

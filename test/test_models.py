@@ -246,25 +246,65 @@ class TestDictionary(unittest.TestCase):
     def test_is_valid_word_invalid(self):
         self.assertFalse(self.dictionary.is_valid_word("xyz"))
         self.assertFalse(self.dictionary.is_valid_word("invalid"))
-        
-        
+
+
 class TestPlayer(unittest.TestCase):
 
 
     def setUp(self):
         self.player = Player("Augusto")
-        self.mock_board = Mock()
-
+        self.tilebag = TilesBag(tiles_testing)
+        self.board = Board()
 
     def test_create_word_valid(self):
         valid_tiles = [Tile("H",1), Tile("O",1), Tile("L",3), Tile("A",4)]
         result = self.player.create_word(valid_tiles)
         self.assertTrue(result)
+        self.assertEqual(self.player.next_word, "HOLA")
 
     def test_create_word_invalid(self):
         invalid_tiles = [Tile("X", 10), Tile("Y",2), Tile("Z", 6)]
         result = self.player.create_word(invalid_tiles)
         self.assertEqual(result, "Palabra inválida")
+
+    def test_get_tiles_from_tilebag(self):
+        self.assertEqual(len(self.player.tiles), 0)
+        self.player.get_tile_from_tilebag(self.tilebag, 7)
+        self.assertEqual(len(self.player.tiles), 7)
+        self.assertEqual(len(self.tilebag.tiles), 93)
+        error_message = self.player.get_tile_from_tilebag(self.tilebag, 120)
+        self.assertEqual(error_message, "No hay suficientes fichas en la bolsa")
+
+    def test_get_tile_index(self):
+        tile = Tile("A", 1)
+        self.player.tiles.append(tile)
+        self.assertEqual(self.player.get_player_tile_index("A"), 0)
+
+    def test_get_tile_index_empty(self):
+        tile = Tile("A", 1)
+        self.assertEqual(self.player.get_player_tile_index(tile), None)
+
+    def test_put_tiles_on_board_vertically(self):
+        self.player.next_word = "HOLA"
+        self.player.tiles = [Tile('H', 1), Tile('O', 1), Tile('L', 3), Tile('A', 4)]
+        self.player.put_tiles_on_board(0, 0, "v", self.board)
+        self.assertEqual(self.player.next_word, "")
+        self.assertEquals(len(self.player.tiles), 0)
+        self.assertEquals(self.board.get_tile(0, 0).letter.letter, "H")
+        self.assertEquals(self.board.get_tile(1, 0).letter.letter, "O")
+        self.assertEquals(self.board.get_tile(2, 0).letter.letter, "L")
+        self.assertEquals(self.board.get_tile(3, 0).letter.letter, "A")
+
+    def test_put_tiles_on_board_horizontally(self):
+        self.player.next_word = "HOLA"
+        self.player.tiles = [Tile('H', 1), Tile('O', 1), Tile('L', 3), Tile('A', 4)]
+        self.player.put_tiles_on_board(0, 0, "h", self.board)
+        self.assertEqual(self.player.next_word, "")
+        self.assertEquals(len(self.player.tiles), 0)
+        self.assertEquals(self.board.get_tile(0, 0).letter.letter, "H")
+        self.assertEquals(self.board.get_tile(0, 1).letter.letter, "O")
+        self.assertEquals(self.board.get_tile(0, 2).letter.letter, "L")
+        self.assertEquals(self.board.get_tile(0, 3).letter.letter, "A")
 
 
 if __name__ == '__main__':
