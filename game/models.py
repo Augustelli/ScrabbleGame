@@ -179,3 +179,13 @@ class Player:
                 board.add_tile(tile_to_add, row, column + i)
                 self.tiles.pop(tile_index)
         self.next_word = ""
+
+    def calculate_word_value(self, word):
+        value = 0
+        for letter in word:
+            for tile in self.tiles:
+                if tile.letter == letter:
+                    value += tile.value
+                    break
+        return value
+

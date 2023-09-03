@@ -256,6 +256,9 @@ class TestPlayer(unittest.TestCase):
         self.tilebag = TilesBag(tiles_testing)
         self.board = Board()
 
+    def tearDown(self) -> None:
+        del self.board
+
     def test_create_word_valid(self):
         valid_tiles = [Tile("H",1), Tile("O",1), Tile("L",3), Tile("A",4)]
         result = self.player.create_word(valid_tiles)
@@ -306,6 +309,37 @@ class TestPlayer(unittest.TestCase):
         self.assertEquals(self.board.get_tile(0, 2).letter.letter, "L")
         self.assertEquals(self.board.get_tile(0, 3).letter.letter, "A")
 
+    def test_calculate_word_value_single_letter(self):
+        # Prueba el cálculo de valor para una sola letra
+        player = Player("Jugador")
+        player.tiles = [Tile("A", 1), Tile("B", 2), Tile("C", 3)]
+
+        word_value = player.calculate_word_value("A")
+        self.assertEqual(word_value, 1)
+
+    def test_calculate_word_value_multiple_letters(self):
+        # Prueba el cálculo de valor para una palabra con múltiples letras
+        player = Player("Jugador")
+        player.tiles = [Tile("A", 1), Tile("B", 2), Tile("C", 3)]
+
+        word_value = player.calculate_word_value("ABC")
+        self.assertEqual(word_value, 6)
+
+    def test_calculate_word_value_empty_word(self):
+        # Prueba el cálculo de valor para una palabra vacía
+        player = Player("Jugador")
+        player.tiles = [Tile("A", 1), Tile("B", 2), Tile("C", 3)]
+
+        word_value = player.calculate_word_value("")
+        self.assertEqual(word_value, 0)
+
+    def test_calculate_word_value_missing_tiles(self):
+        # Prueba el cálculo de valor cuando faltan fichas para las letras de la palabra
+        player = Player("Jugador")
+        player.tiles = [Tile("A", 1), Tile("B", 2), Tile("C", 3)]
+
+        word_value = player.calculate_word_value("XYZ")
+        self.assertEqual(word_value, 0)
 
 if __name__ == '__main__':
 
