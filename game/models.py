@@ -189,3 +189,33 @@ class Player:
                     break
         return value
 
+    def find_all_valid_words_on_board(self, board):
+        words_found = set()
+
+        # Búsqueda Horizontal (Filas)
+        for row in board:
+            word = ""
+            for cell in row:
+                if cell.letter is not None:
+                    word += cell.letter.letter
+                elif len(word) > 1:
+                    words_found.add(word)
+                    word = ""
+            if len(word) > 1:
+                words_found.add(word)
+
+        # Búsqueda Vertical (Columnas)
+        num_columns = len(board[0])
+        for col in range(num_columns):
+            word = ""
+            for row in range(len(board)):
+                cell = board[row][col]
+                if cell.letter is not None:
+                    word += cell.letter.letter
+                elif len(word) > 1:
+                    words_found.add(word)
+                    word = ""
+            if len(word) > 1:
+                words_found.add(word)
+
+        return list(words_found)

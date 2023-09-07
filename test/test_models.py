@@ -341,6 +341,37 @@ class TestPlayer(unittest.TestCase):
         word_value = player.calculate_word_value("XYZ")
         self.assertEqual(word_value, 0)
 
+    def test_horizontal_words(self):
+        self.player.tiles = [Tile('H', 1), Tile('O', 1), Tile('L', 3), Tile('A', 4)]
+        self.player.create_word(self.player.tiles)
+        self.player.put_tiles_on_board(7, 7, "h", self.board)
+        result = self.player.find_all_valid_words_on_board(self.board.board)
+        self.assertEqual(["HOLA"], result)
+
+    def test_vertical_words(self):
+        self.player.tiles = [Tile('H', 1), Tile('O', 1), Tile('L', 3), Tile('A', 4)]
+        self.player.create_word(self.player.tiles)
+        self.player.put_tiles_on_board(7, 7, "v", self.board)
+        result = self.player.find_all_valid_words_on_board(self.board.board)
+        self.assertEquals(["HOLA"], result)
+
+    def test_no_words(self):
+        words = self.player.find_all_valid_words_on_board(self.board.board)
+        self.assertEqual(words, [])
+
+    def test_vertical_and_horizontal_words(self):
+        self.player.tiles = [Tile('H', 1), Tile('O', 1), Tile('L', 3), Tile('A', 4)]
+        self.player.create_word(self.player.tiles)
+        result = self.player.put_tiles_on_board(7, 7, "h", self.board)
+
+        self.player.tiles = [Tile('H', 1), Tile('O', 1), Tile('L', 3), Tile('A', 4), Tile("S", 5)]
+        self.player.create_word(self.player.tiles)
+        self.player.put_tiles_on_board(0, 0, "v", self.board)
+        result = self.player.find_all_valid_words_on_board(self.board.board)
+        self.assertEquals(["HOLA", "HOLAS"], sorted(result))
+
+
+
 if __name__ == '__main__':
 
     unittest.main()
