@@ -1,7 +1,6 @@
 import json
 
-
-with open('game/config.json', 'r') as f:
+with open('game/models/config.json', 'r') as f:
     config_data = json.load(f)
 
 cantidad_letras = config_data['cantidad_letras']

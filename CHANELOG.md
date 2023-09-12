@@ -9,7 +9,7 @@
 - New test implemented.
 - Scrabble game modele created
 
-
+dictionary
 
 ## [0.0.7 SNAPSHOT] - 29/08/2023
 ###Added

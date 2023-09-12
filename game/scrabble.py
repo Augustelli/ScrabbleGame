@@ -1,4 +1,4 @@
-from configuration import Board, BagTiles, Player, tiles
+from models.configuration import Board, BagTiles, Player, tiles
 
 
 class ScrabbleGame:

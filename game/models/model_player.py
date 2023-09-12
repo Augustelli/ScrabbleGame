@@ -1,12 +1,9 @@
-
-
 class Player:
-    def __init__(self, name, dictionary):
+    def __init__(self, name):
         self.tiles = []
         self.name = name
         self.points = 0
         self.next_word = ""
-        self.dictionary = dictionary
 
     def get_tile_from_tilebag(self, tilebag, count):
         tiles_recived = tilebag.take(count)
@@ -15,13 +12,15 @@ class Player:
         else:
             self.tiles.extend(tiles_recived)
 
-    def create_word(self, tiles):
-        self.next_word = "".join(tile.letter for tile in tiles)
-        if self.next_word.lower() in self.dictionary.dictionary:
-            self.next_word = self.next_word
-            return True
-        else:
-            return 'Palabra inválida'
+    def create_word(self, word: str):
+        new_word = ""
+        for letter in word:
+            if self.get_player_tile_index(letter.upper()) is not None:
+                new_word += letter.upper()
+                if len(new_word) == len(word):
+                    self.next_word = new_word
+            else:
+                return "No tienes las fichas necesarias para crear esa palabra"
 
     def get_player_tile_index(self, letter):
         for tile in self.tiles:
@@ -44,42 +43,8 @@ class Player:
                 self.tiles.pop(tile_index)
         self.next_word = ""
 
-    def calculate_word_value(self, word):
-        value = 0
-        for letter in word:
-            for tile in self.tiles:
-                if tile.letter == letter:
-                    value += tile.value
-                    break
-        return value
-
-    def find_all_valid_words_on_board(self, board):
-        words_found = set()
-
-        # Búsqueda Horizontal (Filas)
-        for row in board:
-            word = ""
-            for cell in row:
-                if cell.letter is not None:
-                    word += cell.letter.letter
-                elif len(word) > 1:
-                    words_found.add(word)
-                    word = ""
-            if len(word) > 1:
-                words_found.add(word)
-
-        # Búsqueda Vertical (Columnas)
-        num_columns = len(board[0])
-        for col in range(num_columns):
-            word = ""
-            for row in range(len(board)):
-                cell = board[row][col]
-                if cell.letter is not None:
-                    word += cell.letter.letter
-                elif len(word) > 1:
-                    words_found.add(word)
-                    word = ""
-            if len(word) > 1:
-                words_found.add(word)
-
-        return list(words_found)
+    def get_tile_value(self, letter):
+        for tile in self.tiles:
+            if letter == tile.letter:
+                return tile.value
+        return None

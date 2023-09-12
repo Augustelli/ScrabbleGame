@@ -1,6 +1,6 @@
 import unittest
 from game.models.model_tile import Tile
-from game.configuration import puntaje_por_letra, cantidad_de_fichas_por_letra
+from game.models.configuration import puntaje_por_letra, cantidad_de_fichas_por_letra
 
 tiles_testing = [Tile(letter, puntaje_por_letra[letter]) for letter, count in cantidad_de_fichas_por_letra.items() for _ in range(count)]
 
