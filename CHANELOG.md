@@ -1,14 +1,43 @@
 # ChanelLog
 
 ## [Unreleased]
-## [0.1.  SNAPSHOT] - 12/09/2023
+
+## [0.1.5  SNAPSHOT] - 12/09/2023
+### Added
+- New batchers on README added.
+- main function started
+
+## [0.1.4  SNAPSHOT] - 12/09/2023
 
 ###Added
 - Scrabble game method next turn and end game added
 - Test for each method added
 - Dockerfile added
-## [0.0.8 SNAPSHO] - 29/08/2023
 
+## [0.1.3  SNAPSHOT] - 07/09/2023
+### Refactor
+- All the proyect was organized.
+- New directories for the models and test were created.
+
+## Fix
+- Import problems on modules and test.
+
+## [0.1.2  SNAPSHOT] - 07/09/2023
+### Added
+- New method find_all_words_on_board added.
+- Test for the created method added
+
+## [0.1.1  SNAPSHOT] - 03/09/2023
+### Added
+- New method in Player class added, calculate word added
+- Tests for the created mehtods were created
+
+## [0.1.0 SNAPSHOT] - 02/09/2023
+### Added
+- New method in player class was created and tested.
+- Now all funtionality of the game is created
+
+## [0.0.8 SNAPSHO] - 29/08/2023
 ###Added
 - Dictionary class were created and implemented.
 - New test implemented.
