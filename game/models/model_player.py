@@ -1,9 +1,15 @@
+import random
+
+
 class Player:
     def __init__(self, name):
         self.tiles = []
-        self.name = name
+        self.name = name if name is not None else f"Jugador{random.randint(0, 99):02d}"
         self.points = 0
         self.next_word = ""
+
+    def set_player_name(self, name):
+        self.name = name
 
     def get_tile_from_tilebag(self, tilebag, count):
         tiles_recived = tilebag.take(count)

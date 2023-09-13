@@ -71,12 +71,12 @@ class TestPlayer(unittest.TestCase):
         self.player.next_word = "HOLA"
         self.player.tiles = [Tile('H', 1), Tile('O', 1), Tile('L', 3), Tile('A', 4)]
         self.player.put_tiles_on_board(0, 0, "h", self.board)
-        self.assertEquals(self.player.next_word, "")
-        self.assertEquals(len(self.player.tiles), 0)
-        self.assertEquals(self.board.get_tile(0, 0).letter.letter, "H")
-        self.assertEquals(self.board.get_tile(0, 1).letter.letter, "O")
-        self.assertEquals(self.board.get_tile(0, 2).letter.letter, "L")
-        self.assertEquals(self.board.get_tile(0, 3).letter.letter, "A")
+        self.assertEqual(self.player.next_word, "")
+        self.assertEqual(len(self.player.tiles), 0)
+        self.assertEqual(self.board.get_tile(0, 0).letter.letter, "H")
+        self.assertEqual(self.board.get_tile(0, 1).letter.letter, "O")
+        self.assertEqual(self.board.get_tile(0, 2).letter.letter, "L")
+        self.assertEqual(self.board.get_tile(0, 3).letter.letter, "A")
 
 
 if __name__ == '__main__':

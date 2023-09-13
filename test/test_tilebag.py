@@ -16,7 +16,7 @@ class TestBagTiles(unittest.TestCase):
         taken_tiles = self.bag.take(count)
         self.assertEqual(len(taken_tiles), count, "La cantidad de fichas tomadas no es la esperada")
         self.assertEqual(len(self.bag.tiles), cantidad_letras - count, "La cantidad de fichas restantes en la bolsa no es la esperada")
-        self.assertEquals(self.bag.take(120), "No hay suficientes fichas en la bolsa", "La cantidad de fichas tomadas no es la esperada")
+        self.assertEqual(self.bag.take(120), "No hay suficientes fichas en la bolsa", "La cantidad de fichas tomadas no es la esperada")
 
     def test_put(self):
         initial_count = len(self.bag.tiles)

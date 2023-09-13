@@ -1,7 +1,12 @@
 # ChanelLog
 
 ## [Unreleased]
+## [0.1.  SNAPSHOT] - 12/09/2023
 
+###Added
+- Scrabble game method next turn and end game added
+- Test for each method added
+- Dockerfile added
 ## [0.0.8 SNAPSHO] - 29/08/2023
 
 ###Added
