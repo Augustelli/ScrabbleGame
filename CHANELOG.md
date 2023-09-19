@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+## [0.2.0 SNAPSHOT] - 19/09/2023
+### Added
+- New method added "validate_word_on_rae", this method is used to 
+validate a word on dle.rae.es by a http request.
+- Test for validate_word_on_rae added (100% coverage)
+
+
 ## [0.1.5  SNAPSHOT] - 12/09/2023
 ### Added
 - New batchers on README added.

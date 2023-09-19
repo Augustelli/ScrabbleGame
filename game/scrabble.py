@@ -21,3 +21,7 @@ class ScrabbleGame:
 
     def end_game(self):
         return not self.bag_tiles.tiles
+
+    def validate_word(self, word):
+        pass
+
