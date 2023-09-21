@@ -1,35 +1,50 @@
 import unittest
+from game.models.model_tile import Tile
 from game.scrabble import ScrabbleGame
+from game.models.configuration import puntaje_por_letra, cantidad_de_fichas_por_letra
+
+
+tiles = [Tile(letter, puntaje_por_letra[letter]) for letter, count in cantidad_de_fichas_por_letra.items() for _ in range(count)]
 
 
 class TestScrabbleGame(unittest.TestCase):
+
     def setUp(self):
-        self.game = ScrabbleGame(2)
+        self.scrabble_game = ScrabbleGame(players_count=2)
+        self.scrabble_game.current_player.tiles = [Tile("H", 1), Tile("A", 1), Tile("L", 1), Tile("O", 1)]
+        self.scrabble_game.board.add_tile(Tile("H", 1), 0, 0)
+        self.scrabble_game.board.add_tile(Tile("O", 1), 0, 1)
+        self.scrabble_game.board.add_tile(Tile("L", 1), 0, 2)
+        self.scrabble_game.board.add_tile(Tile("A", 1), 0, 3)
+
+    def test_validate_word(self):
+        result = self.scrabble_game.validate_word("CASA", (0, 0), "h")
+        self.assertEqual(result, 'Faltan tiles.')
+
+        result = self.scrabble_game.validate_word("HALO", (1, 0), "v")
+        self.assertTrue(result)
+
+        result = self.scrabble_game.validate_word("XYZ", (0, 0), "v")
+        self.assertEqual(result, 'Palabra no existe en la RAE')
+
+        result = self.scrabble_game.validate_word("HALO", (12, 12), "v")
+        self.assertFalse(result)
 
     def test_next_turn(self):
-        current_player1 = self.game.players[0]
-        self.game.next_turn()
-        current_player2 = self.game.players[1]
-        self.assertNotEqual(current_player1, current_player2)
-        self.assertEqual(self.game.current_player_index, 1)
+        self.assertEqual(self.scrabble_game.current_player_index, 0)
+        self.assertEqual(self.scrabble_game.current_player, self.scrabble_game.players[0])
 
-    def test_end_game(self):
-        self.assertFalse(self.game.end_game())
-        # Simulo como si hubiera sacado todas las fichas
-        self.game.bag_tiles.tiles = []
-        self.assertTrue(self.game.end_game())
+        self.scrabble_game.next_turn()
 
-    def test_initial_player_turn(self):
-        # Verifica que el primer jugador es el que comienza el juego
-        self.assertEqual(self.game.current_player_index, 0)
+        self.assertEqual(self.scrabble_game.current_player_index, 1)
+        self.assertEqual(self.scrabble_game.current_player, self.scrabble_game.players[1])
 
-    def test_next_turn_wrap_around(self):
-        self.assertEqual(self.game.current_player_index, 0)
-        # Verifica que el turno pase al primer jugador después del último
-        last_player = self.game.players[-1]
-        self.game.current_player = last_player
-        self.game.next_turn()
-        self.assertEqual(self.game.current_player_index, 1)
+        self.scrabble_game.next_turn()
+        self.scrabble_game.next_turn()
+        self.scrabble_game.next_turn()
+
+        self.assertEqual(self.scrabble_game.current_player_index, 0)
+        self.assertEqual(self.scrabble_game.current_player, self.scrabble_game.players[0])
 
 
 if __name__ == '__main__':

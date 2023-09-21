@@ -20,23 +20,12 @@ class TestPlayer(unittest.TestCase):
     def tearDown(self) -> None:
         del self.board
 
-    def test_create_word_valid(self):
-        # Prueba la creación de una palabra válida
-        result = self.player.create_word("CAB")
-        self.assertEqual(result, None)  # Debe ser None, lo que indica éxito
-        self.assertEqual(self.player.next_word, "CAB")
+    def test_create_word(self):
+        self.player.create_word("CASA")
+        self.assertEqual(self.player.next_word, "CASA")
 
-    def test_create_word_not_enough_tiles(self):
-        # Prueba cuando el jugador no tiene suficientes fichas
-        result = self.player.create_word("DOG")
-        self.assertEqual(result, "No tienes las fichas necesarias para crear esa palabra")
-        self.assertEqual(self.player.next_word, "")  # next_word debe seguir siendo una cadena vacía
-
-    def test_create_word_empty(self):
-        # Prueba cuando se proporciona una palabra vacía
-        result = self.player.create_word("")
-        self.assertEqual(result, None)  # Debe ser None, lo que indica éxito
-        self.assertEqual(self.player.next_word, "")
+        self.player.create_word("")
+        self.assertIsNone(self.player.next_word)
 
     def test_get_tiles_from_tilebag(self):
         self.player.tiles = []

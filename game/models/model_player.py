@@ -19,14 +19,7 @@ class Player:
             self.tiles.extend(tiles_recived)
 
     def create_word(self, word: str):
-        new_word = ""
-        for letter in word:
-            if self.get_player_tile_index(letter.upper()) is not None:
-                new_word += letter.upper()
-                if len(new_word) == len(word):
-                    self.next_word = new_word
-            else:
-                return "No tienes las fichas necesarias para crear esa palabra"
+        self.next_word = word if len(word) > 0 else None
 
     def get_player_tile_index(self, letter):
         for tile in self.tiles:
