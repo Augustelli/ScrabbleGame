@@ -2,6 +2,10 @@
 # Scrabble Game by Mancuso Augusto Tomás
 ## [Unreleased]
 
+## [0.2.3 SNAPSHOT] - 290/09/2023
+### Fix
+- requests added to requierement.txt
+
 ## [0.2.2 SNAPSHOT] - 26/09/2023
 ### Added
 - new test added

@@ -4,7 +4,6 @@ from .models.model_player import Player
 from .models.model_tile import Tile
 from .models.configuration import puntaje_por_letra, cantidad_de_fichas_por_letra
 from .validate_word_on_rae.validate_word_on_rae import validate_word_on_rae
-import pdb
 
 
 tiles = [Tile(letter, puntaje_por_letra[letter]) for letter, count in cantidad_de_fichas_por_letra.items() for _ in range(count)]

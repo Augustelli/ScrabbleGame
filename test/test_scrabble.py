@@ -1,10 +1,6 @@
 import unittest
-from unittest.mock import patch
 from game.models.model_tile import Tile
 from game.scrabble import ScrabbleGame
-from game.models.model_tilebag import TilesBag
-from game.models.model_player import Player
-from game.models.model_board import Board
 from game.models.configuration import puntaje_por_letra, cantidad_de_fichas_por_letra
 
 
@@ -107,7 +103,6 @@ class TestScrabbleGame2(unittest.TestCase):
 
         result = self.game.get_word_in_direction(word, location, orientation)
         self.assertIsInstance(result, str)
-
 
 
 if __name__ == '__main__':
