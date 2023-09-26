@@ -2,24 +2,25 @@ from scrabble import ScrabbleGame
 
 
 def main():
-    print("Welcome to Scrabble!")
+    print("Bienvenido!")
     while True:
         try:
-            player_count = int(input("How many players? "))
-            if player_count <= 1 or player_count > 4:
+            players_count = int(input("Ingrese cantidad de jugadores: "))
+            if players_count <= 1 or players_count > 4:
                 raise ValueError
             break
         except ValueError:
-            print("Please enter a number between 2 and 4")
-            scrabble_game = ScrabbleGame(players_count=player_count)
-            print('Number of playes: ', len(scrabble_game.players))
-            scrabble_game.next_turn()
-            print('Current player: ', scrabble_game.current_player)
-            word= input("Enter a word: ")
-            location_x = input("Enter x coordinate: ")
-            location_y = input("Enter y coordinate: ")
-            location = [location_x, location_y]
-            orientation = input("Enter orientation (V/H): ")
+            print("Valor invalido")
+    scrabble_game = ScrabbleGame(players_count=players_count)
+    print("Cantidad de jugadores: ", len(scrabble_game.players))
+    scrabble_game.next_turn()
+    print(f"Turno del jugador {scrabble_game.current_player.id}")
+    word = input("Ingrese palabra: ")
+    location_x = input("Ingrese posicion X: ")
+    location_y = input("Ingrese posicion Y: ")
+    location = (location_x, location_y)
+    orientation = input("Ingrese orientacion (V/H)")
+    scrabble_game.validate_word(word, location, orientation)
 
 
 if __name__ == '__main__':

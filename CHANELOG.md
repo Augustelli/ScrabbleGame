@@ -2,7 +2,11 @@
 # Scrabble Game by Mancuso Augusto Tomás
 ## [Unreleased]
 
-## [0.2.3 SNAPSHOT] - 290/09/2023
+## [0.2.4 SNAPSHOT]
+## Refactor
+- main method refactorized. Now it conciders orientation of
+the played word
+## [0.2.3 SNAPSHOT] - 26/09/2023
 ### Fix
 - requests added to requierement.txt
 
