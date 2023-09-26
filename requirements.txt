@@ -2,3 +2,4 @@ parameterized
 coverage
 colorama
 requests
+beautifulsoup4
