@@ -1,6 +1,10 @@
 import unittest
+from unittest.mock import patch
 from game.models.model_tile import Tile
 from game.scrabble import ScrabbleGame
+from game.models.model_tilebag import TilesBag
+from game.models.model_player import Player
+from game.models.model_board import Board
 from game.models.configuration import puntaje_por_letra, cantidad_de_fichas_por_letra
 
 
@@ -45,6 +49,65 @@ class TestScrabbleGame(unittest.TestCase):
 
         self.assertEqual(self.scrabble_game.current_player_index, 0)
         self.assertEqual(self.scrabble_game.current_player, self.scrabble_game.players[0])
+
+
+class TestScrabbleGame2(unittest.TestCase):
+    def setUp(self):
+        # Configura el juego o cualquier configuración necesaria para los tests
+        self.game = ScrabbleGame(players_count=2)
+
+    def test_get_words_horizontal(self):
+        # Prueba para obtener palabras en dirección horizontal
+        word = "VALOR"
+        location = (7, 7)
+        orientation = "h"
+
+        result = self.game.get_words(word, location, orientation)
+        self.assertIsInstance(result, list)
+
+    def test_get_words_vertical(self):
+        # Prueba para obtener palabras en dirección vertical
+        word = "PALABRA"
+        location = (7, 7)
+        orientation = "v"
+
+        result = self.game.get_words(word, location, orientation)
+        self.assertIsInstance(result, list)
+
+    def test_get_words_empty_word(self):
+        word = ""
+        location = (7, 7)
+        orientation = "h"
+
+        result = self.game.get_words(word, location, orientation)
+        self.assertIsInstance(result, list)
+
+    def test_get_words_wrong_orientation(self):
+        word = "HOLA"
+        location = (7, 7)
+        orientation = "d"  # Orientación incorrecta
+
+        result = self.game.get_words(word, location, orientation)
+        self.assertIsInstance(result, list)
+
+    def test_get_word_in_direction_horizontal(self):
+        # Prueba para obtener una palabra en dirección horizontal
+        word = "HOLA"
+        location = (7, 7)
+        orientation = "h"
+
+        result = self.game.get_word_in_direction(word, location, orientation)
+        self.assertIsInstance(result, str)
+
+    def test_get_word_in_direction_vertical(self):
+        # Prueba para obtener una palabra en dirección vertical
+        word = "MUNDO"
+        location = (7, 7)
+        orientation = "v"
+
+        result = self.game.get_word_in_direction(word, location, orientation)
+        self.assertIsInstance(result, str)
+
 
 
 if __name__ == '__main__':

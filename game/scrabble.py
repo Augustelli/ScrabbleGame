@@ -1,9 +1,9 @@
-from game.models.model_tilebag import TilesBag
-from game.models.model_board import Board
-from game.models.model_player import Player
-from game.models.model_tile import Tile
-from game.models.configuration import puntaje_por_letra, cantidad_de_fichas_por_letra
-from game.validate_word_on_rae.validate_word_on_rae import validate_word_on_rae
+from .models.model_tilebag import TilesBag
+from .models.model_board import Board
+from .models.model_player import Player
+from .models.model_tile import Tile
+from .models.configuration import puntaje_por_letra, cantidad_de_fichas_por_letra
+from .validate_word_on_rae.validate_word_on_rae import validate_word_on_rae
 import pdb
 
 
@@ -57,3 +57,59 @@ class ScrabbleGame:
 
     def end_game(self):
         return not self.bag_tiles.tiles
+
+    def put_words(self, words, locations, orientations):
+        if len(words) != len(locations) != len(orientations):
+            return "Las listas de palabras, ubicaciones y orientaciones deben tener la misma longitud."
+
+        for word, location, orientation in zip(words, locations, orientations):
+            if self.validate_word(word, location, orientation):
+                x, y = location
+
+                if orientation == "v":
+                    for i, letter in enumerate(word):
+                        self.board[x][y + i].letter = letter
+                elif orientation == "h":
+                    for i, letter in enumerate(word):
+                        self.board[x + i][y].letter = letter
+            else:
+                return f"La palabra '{word}' no se puede colocar en la ubicación '{location}' con la orientación '{orientation}'."
+
+        return "Palabras colocadas con éxito."
+
+    def get_words(self, word, location, orientation):
+        x, y = location
+        possible_words = []
+        if orientation == "h":
+            for i in range(len(word)):
+                new_word = self.get_word_in_direction(word, (x + i, y), "v")
+                if new_word:
+                    possible_words.append(new_word)
+        elif orientation == "v":
+            for i in range(len(word)):
+                new_word = self.get_word_in_direction(word, (x, y + i), "h")
+                if new_word:
+                    possible_words.append(new_word)
+
+        return possible_words
+
+    def get_word_in_direction(self, word, location, orientation):
+        x, y = location
+        word_length = len(word)
+        possible_word = ""
+        if orientation == "h":
+            for i in range(word_length):
+                cell = self.board.board[x][y + i]
+                if cell.letter is not None:
+                    possible_word += cell.letter.letter
+                else:
+                    break  # Deja de buscar cuando no hay más letras en la dirección
+        elif orientation == "v":
+            for i in range(word_length):
+                cell = self.board.board[x + i][y]
+                if cell.letter is not None:
+                    possible_word += cell.letter.letter
+                else:
+                    break  # Deja de buscar cuando no hay más letras en la dirección
+
+        return possible_word

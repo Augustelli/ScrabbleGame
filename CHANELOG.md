@@ -1,7 +1,19 @@
 # ChanelLog
-
+# Scrabble Game by Mancuso Augusto Tomás
 ## [Unreleased]
 
+## [0.2.2 SNAPSHOT] - 26/09/2023
+### Added
+- new test added
+- Method get_words_in_direction added
+## Refactor
+- get_word refactored because new implementation
+## [0.2.1 SNAPSHOT] - 21/09/2023
+### Added:
+- New features added and testes
+- Validate word added and tested
+### Refactor
+- create_word on playerr class
 ## [0.2.0 SNAPSHOT] - 19/09/2023
 ### Added
 - New method added "validate_word_on_rae", this method is used to 
