@@ -110,3 +110,24 @@ class Board():
                 words_found.add(word)
 
         return list(words_found)
+
+    def get_letters_in_row_column(self, position, orientation):
+        letters = ""
+
+        if orientation == "h":
+            for letter in self.board[0][position[1]].letter:
+                if letter is not None:
+                    letters += letter.letter
+                else:
+                    letters += "_"
+        elif orientation == "v":
+            for letter in self.board[position[0]][0].letter:
+                if letter is not None:
+                    letters += letter.letter
+                else:
+                    letters += "_"
+
+        word_left = letters[:orientation[1]][::-1].split("_")[0][::-1]
+        word_right = letters[orientation[1]:].split("_")[0]
+        full_word = word_left + word_right
+        return ([letter for letter in full_word])

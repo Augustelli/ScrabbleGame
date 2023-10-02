@@ -1,9 +1,9 @@
-from .models.model_tilebag import TilesBag
-from .models.model_board import Board
-from .models.model_player import Player
-from .models.model_tile import Tile
-from .models.configuration import puntaje_por_letra, cantidad_de_fichas_por_letra
-from .validate_word_on_rae.validate_word_on_rae import validate_word_on_rae
+from game.models.model_tilebag import TilesBag
+from game.models.model_board import Board
+from game.models.model_player import Player
+from game.models.model_tile import Tile
+from game.models.configuration import puntaje_por_letra, cantidad_de_fichas_por_letra
+from .validate_word import validate_word_on_rae
 
 
 tiles = [Tile(letter, puntaje_por_letra[letter]) for letter, count in cantidad_de_fichas_por_letra.items() for _ in range(count)]
@@ -102,13 +102,54 @@ class ScrabbleGame:
                 if cell.letter is not None:
                     possible_word += cell.letter.letter
                 else:
-                    break  # Deja de buscar cuando no hay más letras en la dirección
+                    break
         elif orientation == "v":
             for i in range(word_length):
                 cell = self.board.board[x + i][y]
                 if cell.letter is not None:
                     possible_word += cell.letter.letter
                 else:
-                    break  # Deja de buscar cuando no hay más letras en la dirección
+                    break
 
         return possible_word
+
+    # Verificar si el jugador puede jugar una palabra
+    def can_play_word(self):
+        word_to_be_played, position, orientation = self.current_player.next_play
+        current_player_tiles = self.current_player.tiles.copy()
+        # Palabra válida en la RAE     
+        valid_word = True if validate_word_on_rae(word_to_be_played) else "Palabra no existe en la RAE"
+
+        list_letters_in_row_column = self.board.get_letters_in_row_column(position, orientation)
+        # Fichas necesarias para jugar la palabra
+        list_letters_word_to_be_played = list(word_to_be_played)
+        list_letters_required = [letter for letter in list_letters_in_row_column if letter not in list_letters_word_to_be_played]
+
+        for letter_requiered in list_letters_required:
+            for letter_player in current_player_tiles:
+                if letter_requiered == letter_player.letter:
+                    list_letters_required.remove(letter_player.letter)
+                    break
+        if list_letters_required:
+            return f"{self.current_player.name} no tiene las fichas necesarias para jugar la palabra {word_to_be_played}"
+        # Jugar palabra en la posición.
+        # Verificar si la palabra puede ser jugada en la posición
+        x, y = position
+        if orientation == "v":
+            if y + len(word_to_be_played) <= 15:
+                enough_space = all(self.board.board[x][y + i].letter is None for i in range(len(word_to_be_played)))
+        elif orientation == "h":
+            if x + len(word_to_be_played) <= 15:
+                enough_space = all(self.board.board[x + i][y].letter is None for i in range(len(word_to_be_played)))
+        else:
+            enough_space = False
+        if not enough_space:
+            return f"La palabra {word_to_be_played} no puede ser jugada en la posición {position} con la orientación {orientation}"
+
+        multiple_words_created = self.board.get_multiplewords_by_given_word(word_to_be_played, position, orientation)
+        # Verificar si las palabras multiples palabras son válidas en la RAE
+        for word in multiple_words_created:
+            if not validate_word_on_rae(word):
+                return f"La palabra {word} no existe en la RAE"
+
+        return valid_word and enough_space

@@ -6,7 +6,8 @@ class Player:
         self.tiles = []
         self.name = name if name is not None else f"Jugador{random.randint(0, 99):02d}"
         self.points = 0
-        self.next_word = ""
+        self.next_play = ["", [0, 0], "h"]
+        # [ palabra a jugar, [fila, columna], direccion ]
 
     def set_player_name(self, name):
         self.name = name
@@ -47,3 +48,7 @@ class Player:
             if letter == tile.letter:
                 return tile.value
         return None
+
+    def create_play(self, word, location, orientation):
+        if word is not None and location is not None and orientation is not None:
+            self.next_play = [word, location, orientation]
