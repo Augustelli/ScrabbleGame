@@ -3,6 +3,7 @@ from .configuration import coordenadas_multiplicadores, multiplicadores_valores,
 from .model_cell import Cell
 from .model_dictionary import Dictionary
 from .model_tile import Tile
+import pdb  # noqa
 
 
 class Board():
@@ -113,21 +114,61 @@ class Board():
 
     def get_letters_in_row_column(self, position, orientation):
         letters = ""
-
+        x, y = position
         if orientation == "h":
-            for letter in self.board[0][position[1]].letter:
-                if letter is not None:
-                    letters += letter.letter
+            for i in range(15):
+                if self.board[x][i].letter is not None:
+                    letters += self.board[x][i].letter.letter
                 else:
                     letters += "_"
         elif orientation == "v":
-            for letter in self.board[position[0]][0].letter:
-                if letter is not None:
-                    letters += letter.letter
+            for i in range(15):
+                if self.board[i][y].letter is not None:
+                    letters += self.board[i][y].letter.letter
                 else:
                     letters += "_"
-
-        word_left = letters[:orientation[1]][::-1].split("_")[0][::-1]
-        word_right = letters[orientation[1]:].split("_")[0]
+        word_left = letters[:position[1]][::-1].split("_")[0][::-1]
+        word_right = letters[position[1]:].split("_")[0]
         full_word = word_left + word_right
         return ([letter for letter in full_word])
+
+    def get_word_in_row_column(self, position, orientation):
+        letters = ""
+        x, y = position
+        if orientation == "h":
+            print("h")
+            for i in range(15):
+                if self.board[x][i].letter is not None:
+                    letters += self.board[x][i].letter.letter
+                    print(letters)
+                else:
+                    letters += "_"
+                    print(letters)
+        elif orientation == "v":
+            print("v")
+            for i in range(15):
+                if self.board[i][y].letter is not None:
+                    letters += self.board[i][y].letter.letter
+                    print(letters)
+                else:
+                    letters += "_"
+                    print(letters)
+        word_left = letters[:position[1]][::-1].split("_")[0][::-1]
+        word_right = letters[position[1]:].split("_")[0]
+        # pdb.set_trace()
+        return word_left + word_right
+
+    def get_multiple_words_by_played_word(self, word_played, position, orientation):
+        words = list()
+        if orientation == "h":
+            for i in range(len(word_played)):
+                new_word = self.get_word_in_row_column((position[0], position[1] + i), "v")
+                if new_word:
+                    words.append(new_word)
+        elif orientation == "v":
+            for i in range(len(word_played)):
+                new_word = self.get_word_in_row_column((position[0] + i, position[1]), "h")
+                if new_word:
+                    words.append(new_word)
+        # pdb.set_trace()
+        return words
