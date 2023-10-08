@@ -1,15 +1,16 @@
-from JugadaDTO.jugada_dto import JugadaDto
-import pdb
+from game.JugadaDTO.jugada_dto import JugadaDto
+import pdb  # noqa
 
 
 class Rack:
 
     def __init__(self, tilebag) -> None:
-        self.tiles = list(tilebag.getTiles(7))
+        self.tiles = tilebag.getTiles(7)
         self.maxTiles = 7
         self.tilebag = tilebag
 
     def __str__(self):
+        # pragma: no cover
         tile_str = ', '.join(str(tile) for tile in self.tiles)
         return f"Rack:\n  - Cantidad de fichas: {len(self.tiles)}\n  - Fichas: {tile_str}"
 
@@ -30,7 +31,7 @@ class Rack:
                     break
         return tileToReturn
 
-    # Método de intercambio con TIlebag
+    # Método de intercambio con Tilebag
     def changeTiles(self, dtoCambio):
         tilesToTilebag = list()
         for letter in dtoCambio.tilesACambiar:
@@ -40,7 +41,6 @@ class Rack:
                     self.tiles.remove(tile)
                     break
         nuevosTiles = self.tilebag.getTiles(len(tilesToTilebag))
-        pdb.set_trace()
         self.tiles.extend(nuevosTiles)
         self.tilebag.putTiles(tilesToTilebag)
         return JugadaDto(cambiarFichas=True)

@@ -47,7 +47,6 @@ def main():
         accion_ingresada = input("Ingrese una acción: ").lower()
         print("\n")
         print('-'*50)
-        pdb.set_trace()
         if accion_ingresada == "skip" or accion_ingresada == "":
             juego.passTurn()
         elif accion_ingresada == "change":
