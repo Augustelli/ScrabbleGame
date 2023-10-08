@@ -1,4 +1,5 @@
 from .RackModel import Rack
+from JugadaDTO.jugada_dto import JugadaDto
 import random
 
 
@@ -17,11 +18,23 @@ class Player:
     def play_word(self, word):
         pass
 
-    def exchangeTiles(tiles_to_exchange, tile_bag):
-        pass
+    def exchangeTiles(self):
+        print("ENTRO A PLAYER")
+        incorrecto = True
+        while incorrecto:
+            tilesToExchangeStr = input("Ingrese las fichas que desea cambiar separadas por espacios: ").upper()
+            tilesToExchangeStr = tilesToExchangeStr.split()
+            tilesOnRack = self.rack.getTilesOnRack()
 
-    def passTurn():
-        pass
+            for letter in tilesToExchangeStr:
+                if letter not in [tile.letter for tile in tilesOnRack]:
+                    print(f"La letra '{letter}' no está en su rack.")
+                    break
+            else:
+                incorrecto = False
 
-    def isRackEmpty():
-        pass
+        dtoCambio = JugadaDto(cambiarFichas=True, tilesACambiar=list(tilesToExchangeStr))
+        return self.rack.changeTiles(dtoCambio)
+
+    def isRackEmpty(self):
+        return self.rack.isEmpty()

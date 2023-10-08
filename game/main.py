@@ -1,38 +1,7 @@
-import pdb
-import curses
 from modelsNew.ScrabbleGameNew import Scrabble
-import npyscreen
-
-
-class JuegoForm(npyscreen.Form):
-    def create(self):
-        # Obtenemos el tamaño de la pantalla
-        max_y, max_x = self.useable_space()
-
-        # Ventana izquierda para el tablero (ocupará la mitad izquierda de la pantalla)
-        width = max_x // 2
-        height = max_y - 4
-        self.tablero = self.add(npyscreen.BoxTitle, name="Tablero", max_width=width, max_height=height, rely=2, relx=2)
-
-        # Ventana superior derecha para la tabla de puntos
-        self.tabla_puntos = self.add(npyscreen.BoxTitle, name="Tabla de Puntos", rely=2, relx=width + 2, max_height=10, max_width=-2)
-        self.tabla_turnos = self.add(npyscreen.BoxTitle, name="Turnos", rely=2, relx=width + 2, max_height=10, max_width=-2)
-
-        # Ventana inferior derecha para las fichas del jugador
-        self.fichas_jugador = self.add(npyscreen.BoxTitle, name="Fichas del Jugador", rely=12, relx=width + 2, max_height=10, max_width=-2)
-
-        # Campo de entrada para las acciones del jugador
-        self.accion_jugador = self.add(npyscreen.MultiLineEditableBoxed, name="Acción del Jugador", rely=22, relx=width + 2, max_width=-2)
-
-    def while_waiting(self, juego: Scrabble):
-        accion_ingresada = self.accion_jugador.value.lower()
-        if accion_ingresada == "skip":
-            juego.passTurn()
-        elif accion_ingresada == "change":
-            juego.changeTiles()
-        else:
-            juego.playWord(accion_ingresada)
-            self.accion_jugador.value = ""
+import os
+import pdb
+import time
 
 
 def get_num_players():
@@ -61,16 +30,32 @@ def main():
     num_players = get_num_players()
     player_names = get_player_names(num_players)
     juego = Scrabble(num_players)
-    # Seteo el nombre a los jugadores
+    # Seteo el nombre a los jugadoresi
     for i in range(num_players):
         print(f"Jugador {i+1}: {player_names[i]}")
         juego.setPlayerName(player_names[i], i)
+    time.sleep(1)
+    os.system("clear")
+    while not juego.gameFinished:
+        print('-'*50)
+        print("Para realizar jugadas: \n\t- Ingrese la palabra que desea jugar.\n\t- Si desea cambiar fichas, ingrese 'change'.\n\t- Si desea pasar el turno, ingrese 'skip o  ENTER'.")
+        print('-'*50)
+        juego.endGame()
+        print("\n")
+        print(f"Turno de {juego.current_player.name}: ")
+        # juego.showTurnInfo()
+        accion_ingresada = input("Ingrese una acción: ").lower()
+        print("\n")
+        print('-'*50)
+        pdb.set_trace()
+        if accion_ingresada == "skip" or accion_ingresada == "":
+            juego.passTurn()
+        elif accion_ingresada == "change":
+            juego.current_player.exchangeTiles()
+        else:
+            juego.playWord(accion_ingresada)
+        # os.system("clear")
 
-    curses.wrapper(run_game)
 
-def run_game(stdscr):
-    app = npyscreen.NPSAppManaged()
-    form = JuegoForm()
-    form.edit()
 if __name__ == "__main__":
     main()

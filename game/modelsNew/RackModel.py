@@ -1,8 +1,13 @@
+from JugadaDTO.jugada_dto import JugadaDto
+import pdb
+
+
 class Rack:
 
     def __init__(self, tilebag) -> None:
         self.tiles = list(tilebag.getTiles(7))
         self.maxTiles = 7
+        self.tilebag = tilebag
 
     def __str__(self):
         tile_str = ', '.join(str(tile) for tile in self.tiles)
@@ -24,3 +29,25 @@ class Rack:
                     self.tiles.remove(tile)
                     break
         return tileToReturn
+
+    # Método de intercambio con TIlebag
+    def changeTiles(self, dtoCambio):
+        tilesToTilebag = list()
+        for letter in dtoCambio.tilesACambiar:
+            for tile in self.tiles:
+                if tile.letter == letter:
+                    tilesToTilebag.append(tile)
+                    self.tiles.remove(tile)
+                    break
+        nuevosTiles = self.tilebag.getTiles(len(tilesToTilebag))
+        pdb.set_trace()
+        self.tiles.extend(nuevosTiles)
+        self.tilebag.putTiles(tilesToTilebag)
+        return JugadaDto(cambiarFichas=True)
+
+    def getTilesOnRack(self):
+        return self.tiles
+
+    def isEmpty(self):
+        return len(self.tiles) == 0
+    
