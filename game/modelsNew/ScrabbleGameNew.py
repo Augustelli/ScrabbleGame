@@ -1,8 +1,8 @@
-from BoardModel import Board
-from TileBagModel import TilesBag
-from PlayerModel import Player
-from TIleModel import Tile
-from configuration import puntaje_por_letra, cantidad_de_fichas_por_letra
+from .BoardModel import Board
+from .TileBagModel import TilesBag
+from .PlayerModel import Player
+from .TileModel import Tile
+from .configuration import puntaje_por_letra, cantidad_de_fichas_por_letra
 
 
 tiles = [Tile(letter, puntaje_por_letra[letter]) for letter, count in cantidad_de_fichas_por_letra.items() for _ in range(count)]
@@ -17,6 +17,9 @@ class Scrabble:
         self.current_player = self.players[self.current_player_index]
         self.skippedTimes = 0
         self.gameFinished = False
+
+    def setPlayerName(self, name, index):
+        self.players[index].name = name
 
     def __str__(self) -> str:
         players_info = "\n".join([f"- {player}" for player in self.players])
@@ -43,9 +46,14 @@ class Scrabble:
         self.current_player_index = (self.current_player_index + 1) % len(self.players)
 
     def passTurn(self):
+        print("Paso turno")
         self.skippedTimes += 1
         self.nextTurn()
 
     def endGame(self):
         # Devuelve True si el juego terminó
         return (not self.tiles_bags.tiles) or (self.skippedTimes == 2*len(self.players))
+
+    def changeTiles(self):
+        print("Cambiar TIles")
+        pass

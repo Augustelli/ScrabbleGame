@@ -1,4 +1,4 @@
-from RackModel import Rack
+from .RackModel import Rack
 import random
 
 

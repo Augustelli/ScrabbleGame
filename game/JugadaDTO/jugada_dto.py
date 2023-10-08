@@ -1,6 +1,10 @@
+from dataclasses import dataclass
 
-class JugadaDto():
-    
-    def __init__(self):
-        self.pasarTurno = False
-        self.cambiarFichas = False # o puede ser la cantidad a cambiar  
+
+@dataclass
+class JugadaDto:
+    pasarTurno: bool = False
+    cambiarFichas: bool = False  # o puede ser la cantidad a cambiar
+    fichas: list = []  # Voy a pasar las fichas que se van a jugar/cambiar
+    posiciones: list = []  # [x, y]
+    palabra: str = ""
