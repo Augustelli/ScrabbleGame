@@ -26,6 +26,7 @@ def validate_word_on_rae(word):
             return True
 
         else:
+            # TODO: Agregar la opcion para buscar en dictionary
             print(f'La solicitud no fue exitosa. Código de estado: {response.status_code}')
             return False
 

@@ -1,5 +1,5 @@
 from colorama import init, Fore
-from .configuration import coordenadas_multiplicadores, multiplicadores_valores, puntaje_por_letra
+from ..modelsNew.configuration import coordenadas_multiplicadores, multiplicadores_valores, puntaje_por_letra
 from .model_cell import Cell
 from .model_dictionary import Dictionary
 from .model_tile import Tile
