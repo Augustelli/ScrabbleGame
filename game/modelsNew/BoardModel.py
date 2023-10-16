@@ -1,6 +1,6 @@
 from .configuration import coordenadas_multiplicadores, multiplicadores_valores
 from .CellModel import Cell
-from modelsNew.TileModel import Tile
+from game.modelsNew.TileModel import Tile
 from colorama import init, Fore
 
 

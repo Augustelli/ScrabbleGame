@@ -40,10 +40,9 @@ def main():
         print('-'*50)
         print("Para realizar jugadas: \n\t- Ingrese la palabra que desea jugar.\n\t- Si desea cambiar fichas, ingrese 'change'.\n\t- Si desea pasar el turno, ingrese 'skip o  ENTER'.")
         print('-'*50)
-        juego.endGame()
         print("\n")
         print(f"Turno de {juego.current_player.name}: ")
-        # juego.showTurnInfo()
+        juego.showTurnInfo()
         accion_ingresada = input("Ingrese una acción: ").lower()
         print("\n")
         print('-'*50)
@@ -53,7 +52,9 @@ def main():
             juego.current_player.exchangeTiles()
         else:
             juego.playWord(accion_ingresada)
-        # os.system("clear")
+        os.system("clear")
+        juego.endGame()
+
 
 
 if __name__ == "__main__":

@@ -1,5 +1,5 @@
 from .RackModel import Rack
-from JugadaDTO.jugada_dto import JugadaDto
+from game.JugadaDTO.jugada_dto import JugadaDto
 import random
 
 

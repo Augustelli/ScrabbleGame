@@ -1,3 +1,5 @@
+from colorama import Fore
+
 from .BoardModel import Board
 from .TileBagModel import TilesBag
 from .PlayerModel import Player
@@ -51,7 +53,7 @@ class Scrabble(object):
         self.nextTurn()
 
     def endGame(self):
-        if (not self.tiles_bags.tiles) or (self.skippedTimes == 2*len(self.players) - 1):
+        if (not self.tiles_bags.tiles) or (self.skippedTimes == 2*len(self.players)-1):
             self.gameFinished = True
             print("Juego terminado")
 
@@ -69,11 +71,45 @@ class Scrabble(object):
             else:
                 print("La entrada es inválida. Por favor, ingrese las letras de las fichas que desea cambiar nuevamente.")
 
-
-class TerminalInfo(Scrabble):
-
-    def __init__(self, players_count):
-        super().__init__(players_count)
-
     def showTurnInfo(self):
-        pass
+        # Debe mostrar toda la información del turno actual
+        # Tablero
+        # Tiles del jugador
+        # Puntaje
+        self.showBoard()
+        self.showPlayerTiles()
+        self.showPlayerPoints()
+
+    def showPlayerTiles(self):
+        tile_info = " | ".join([f"{tile.letter} {tile.value}" for tile in self.current_player.rack.tiles])
+        print(f"| {tile_info} |")
+        print()
+
+    def showPlayerPoints(self):
+        print("Puntajes:")
+        for player in self.players:
+            print(f" -> {player.name}: {player.points} pts")
+        print()
+    def showBoard(self):
+        print(Fore.GREEN + "+---------" * 15 + "+")
+        for row in self.board.board:
+            formatted_row = []
+            for cell in row:
+                if isinstance(cell.letter, Tile):
+                    # Si hay una letra asignada a la celda
+                    if cell.letter is not None:
+                        if len(cell.letter.letter) == 1:
+                            formatted_row.append(
+                                f"{Fore.GREEN}|   {Fore.YELLOW}{cell.letter.letter}{cell.letter.value:2d}   ")
+                        else:
+                            formatted_row.append(
+                                f"{Fore.GREEN}|  {Fore.YELLOW}{cell.letter.letter}{cell.letter.value:2d}   ")
+                # Si hay multiplicadores
+                elif cell.multiplier != 1:
+                    formatted_row.append(f"{Fore.CYAN}| x{(cell.multiplier)}{cell.multiplier_type :^6}")
+                else:
+                    formatted_row.append(f"{Fore.GREEN}|{Fore.WHITE:^14}")
+            formatted_row.append(Fore.GREEN + "|")
+            print("".join(formatted_row))
+            print(Fore.GREEN + "+---------" * 15 + "+")
+        print()
