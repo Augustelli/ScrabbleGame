@@ -50,6 +50,8 @@ def main():
             juego.passTurn()
         elif accion_ingresada == "change":
             juego.current_player.exchangeTiles()
+            juego.nextTurn()
+            juego.skippedTimes = 0
         else:
             juego.playWord(accion_ingresada)
         os.system("clear")

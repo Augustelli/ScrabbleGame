@@ -1,5 +1,5 @@
 from .RackModel import Rack
-from game.JugadaDTO.jugada_dto import JugadaDto
+from JugadaDTO.jugada_dto import JugadaDto
 import random
 
 
@@ -34,6 +34,7 @@ class Player:
                 incorrecto = False
 
         dtoCambio = JugadaDto(cambiarFichas=True, tilesACambiar=list(tilesToExchangeStr))
+
         return self.rack.changeTiles(dtoCambio)
 
     def isRackEmpty(self):

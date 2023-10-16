@@ -53,7 +53,7 @@ class Scrabble(object):
         self.nextTurn()
 
     def endGame(self):
-        if (not self.tiles_bags.tiles) or (self.skippedTimes == 2*len(self.players)-1):
+        if (not self.tiles_bags.tiles) or (self.skippedTimes == 2*len(self.players)):
             self.gameFinished = True
             print("Juego terminado")
 
@@ -72,10 +72,6 @@ class Scrabble(object):
                 print("La entrada es inválida. Por favor, ingrese las letras de las fichas que desea cambiar nuevamente.")
 
     def showTurnInfo(self):
-        # Debe mostrar toda la información del turno actual
-        # Tablero
-        # Tiles del jugador
-        # Puntaje
         self.showBoard()
         self.showPlayerTiles()
         self.showPlayerPoints()
