@@ -1,4 +1,5 @@
 from colorama import Fore
+from game.validate_word.validate_word_on_rae import validate_word_on_rae
 
 from .BoardModel import Board
 from .TileBagModel import TilesBag
@@ -42,6 +43,52 @@ class Scrabble(object):
 
     * Juego terminado: {self.gameFinished}
 """
+    # 1 Validar palabra RAE
+    # 2 Validar que el jugador tiene las fichas necesarias
+    # 3 Validar que la palabra entre en el tablero
+    # 4 Calcular puntos
+    # 5 Pasar de turno
+    def playWord(self, playedWord):
+        print("ENTRO A PLAY WORD: "+playedWord)
+        validWord = validate_word_on_rae(playedWord)
+        if not validWord:
+            print("La palabra no existe en la RAE.")
+            return False  # Ver qué devolver
+        positionAndDirection = input("Ingrese la posición y dirección de la palabra (ej: 1 1 h): ").split()
+
+        row = int(positionAndDirection[0]) - 1
+        column = int(positionAndDirection[1]) - 1
+        direction = positionAndDirection[2]
+
+        # Corroborar que la palabra entre en el tablero
+        wordCanBePlaced = self.board.checkIfWordCanBePlaced(playedWord, row, column, direction)
+        if wordCanBePlaced is not True:  # Checkear qué devolver para el user.
+            print(wordCanBePlaced)
+            return False
+        # Ver qué tiles debo poner en el tablero para formar la palabra con los que tengo.
+        tilesOnBoard = self.board.getLettersInRowColumn((row, column), direction)
+        playerWordTiles=self.current_player.rack.returnTiles(playedWord)  # Tiles que tiene el jugador sobre la palabra jugada
+        tilesPlayedWord = list()
+        for letter in tilesOnBoard:
+            for index in range(len(playerWordTiles)):
+                if letter == tilesPlayedWord[index]:
+                    tilesPlayedWord.pop(index)
+                    break
+
+        letterToPlay = []
+        # Busca si tengo los tiles necesarios, sino devulevo False
+        for tile in playerWordTiles:
+            if tile.letter in tilesPlayedWord:
+                letterToPlay.append(tile)
+                tilesPlayedWord.remove(tile)
+        if tilesPlayedWord:
+            return False
+
+        # Poner las fichas en el tablero
+        self.board.addTilesToBoard(letterToPlay, row, column, direction)
+
+
+
 
     def nextTurn(self):
         self.current_player_index = (self.current_player_index + 1) % len(self.players)

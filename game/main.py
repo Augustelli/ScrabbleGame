@@ -26,7 +26,6 @@ def get_player_names(num_players):
 
 def main():
     print("¡Bienvenido a Scrabble!")
-
     num_players = get_num_players()
     player_names = get_player_names(num_players)
     juego = Scrabble(num_players)
@@ -53,7 +52,7 @@ def main():
             juego.nextTurn()
             juego.skippedTimes = 0
         else:
-            juego.playWord(accion_ingresada)
+            juego.playWord(accion_ingresada) # Palabra a jugar
         os.system("clear")
         juego.endGame()
 

@@ -27,6 +27,43 @@ class Board():
         else:
             self.board[row][column].letter = tile
 
+    def checkIfWordCanBePlaced(self, word, row, column, direction):
+        len_word_to_be_played = len(word)
+        if direction == "h":
+            if column + (len_word_to_be_played - 1) <= 14:
+                for i in range(len_word_to_be_played):
+                    if self.board[row][column + i].letter is not None:
+                        return f"La palabra {word_to_be_played} no puede ser jugada en la posición {position} con la orientación {orientation} porque hay una ficha en la posición {position[0]},{position[1] + i}"  # noqa
+            else:
+                return f"La palabra {word_to_be_played} no puede ser jugada en la posición {position} con la orientación {orientation} porque no hay espacio suficiente"  # noqa
+        elif direction == "v":
+            if row + (len_word_to_be_played - 1) <= 14:
+                for i in range(len_word_to_be_played):
+                    if self.board[row + i][column].letter is not None:
+                        return f"La palabra {word_to_be_played} no puede ser jugada en la posición {position} con la orientación {orientation} porque hay una ficha en la posición {position[0] + i},{position[1]}"  # noqa
+            else:
+                return f"La palabra {word_to_be_played} no puede ser jugada en la posición {position} con la orientación {orientation} porque no hay espacio suficiente"  # noqa
+        return True
+
+    def getLettersInRowColumn(self, position, orientation):
+        letters = ""
+        x, y = position
+        if orientation == "h":
+            for i in range(15):
+                if self.board[x][i].letter is not None:
+                    letters += self.board[x][i].letter.letter
+                else:
+                    letters += "_"
+        elif orientation == "v":
+            for i in range(15):
+                if self.board[i][y].letter is not None:
+                    letters += self.board[i][y].letter.letter
+                else:
+                    letters += "_"
+        word_left = letters[:position[1]][::-1].split("_")[0][::-1]
+        word_right = letters[position[1]:].split("_")[0]
+        full_word = word_left + word_right
+        return ([letter for letter in full_word])
     def showBoard(self):
         print(Fore.GREEN + "+---------" * 15 + "+")
         for row in self.board:
