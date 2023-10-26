@@ -57,6 +57,5 @@ def main():
         juego.endGame()
 
 
-
 if __name__ == "__main__":
     main()

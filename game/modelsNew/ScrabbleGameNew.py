@@ -1,5 +1,5 @@
 from colorama import Fore
-from game.validate_word.validate_word_on_rae import validate_word_on_rae
+from .validate_word_on_rae import validate_word_on_rae
 
 from .BoardModel import Board
 from .TileBagModel import TilesBag
@@ -47,7 +47,6 @@ class Scrabble(object):
     # 2 Validar que el jugador tiene las fichas necesarias
     # 3 Validar que la palabra entre en el tablero
     # 4 Calcular puntos
-    # 5 Pasar de turno
     def playWord(self, playedWord):
         print("ENTRO A PLAY WORD: "+playedWord)
         validWord = validate_word_on_rae(playedWord)
@@ -58,7 +57,7 @@ class Scrabble(object):
 
         row = int(positionAndDirection[0]) - 1
         column = int(positionAndDirection[1]) - 1
-        direction = positionAndDirection[2]
+        direction = positionAndDirection[2].lower()
 
         # Corroborar que la palabra entre en el tablero
         wordCanBePlaced = self.board.checkIfWordCanBePlaced(playedWord, row, column, direction)
@@ -68,26 +67,29 @@ class Scrabble(object):
         # Ver qué tiles debo poner en el tablero para formar la palabra con los que tengo.
         tilesOnBoard = self.board.getLettersInRowColumn((row, column), direction)
         playerWordTiles=self.current_player.rack.returnTiles(playedWord)  # Tiles que tiene el jugador sobre la palabra jugada
-        tilesPlayedWord = list()
-        for letter in tilesOnBoard:
-            for index in range(len(playerWordTiles)):
-                if letter == tilesPlayedWord[index]:
-                    tilesPlayedWord.pop(index)
-                    break
+        tilesPlayedWord = [Tile(letter, 1) for letter in playedWord.upper()]
+        lettersToPlay = []
+        if len(tilesOnBoard) != 0:
+            for letter in tilesPlayedWord:
+                for i in range(len(tilesPlayedWord)):
+                    if letter == tilesOnBoard[i]:
+                        tilesPlayedWord.remove(letter)
+                        break
 
-        letterToPlay = []
-        # Busca si tengo los tiles necesarios, sino devulevo False
-        for tile in playerWordTiles:
-            if tile.letter in tilesPlayedWord:
-                letterToPlay.append(tile)
-                tilesPlayedWord.remove(tile)
-        if tilesPlayedWord:
+        for letter in tilesPlayedWord:
+            if letter in playerWordTiles:
+                lettersToPlay.append(letter)
+                playerWordTiles.remove(letter)
+
+        self.current_player.rack.addTiles(playerWordTiles)
+        if not tilesPlayedWord:
             return False
 
         # Poner las fichas en el tablero
-        self.board.addTilesToBoard(letterToPlay, row, column, direction)
-
-
+        self.current_player.points += self.board.addTilesToBoard(lettersToPlay, row, column, direction, self.board)
+        self.current_player.rack.addTileToPlayer(len(playedWord))
+        self.nextTurn()
+        self.skippedTimes = 0
 
 
     def nextTurn(self):

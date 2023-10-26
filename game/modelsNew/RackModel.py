@@ -17,6 +17,8 @@ class Rack:
     def addTiles(self, tiles: list):
         self.tiles.extend(tiles)
 
+    def addTileToPlayer(self,numberOfTiles):
+        self.tiles.extend(self.tilebag.getTiles(numberOfTiles))
     """
     Doy una palabra y me devuelve los tiles que necesito para formarla
     Si no tengo alguno, devuelve los que tenga
@@ -25,7 +27,7 @@ class Rack:
         tileToReturn = []
         for letter in word:
             for tile in self.tiles:
-                if tile.letter == letter:
+                if tile.letter == letter.upper():
                     tileToReturn.append(tile)
                     self.tiles.remove(tile)
                     break

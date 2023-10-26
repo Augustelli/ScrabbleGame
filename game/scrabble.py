@@ -3,7 +3,7 @@ from models.model_board import Board
 from models.model_player import Player
 from models.model_tile import Tile
 from modelsNew.configuration import puntaje_por_letra, cantidad_de_fichas_por_letra
-from validate_word.validate_word_on_rae import validate_word_on_rae
+from game.modelsNew.validate_word_on_rae import validate_word_on_rae
 import pdb
 
 

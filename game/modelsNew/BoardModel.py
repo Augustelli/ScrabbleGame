@@ -1,7 +1,10 @@
+import pdb
+
 from .configuration import coordenadas_multiplicadores, multiplicadores_valores
 from .CellModel import Cell
 from .TileModel import Tile
 from colorama import init, Fore
+from .configuration import puntaje_por_letra
 
 
 class Board():
@@ -23,7 +26,7 @@ class Board():
 
     def addTileOnCell(self, tile, row, column):
         if isinstance(self.board[row][column].letter, Tile):
-            return "Celda ocupada"
+            pass
         else:
             self.board[row][column].letter = tile
 
@@ -64,6 +67,7 @@ class Board():
         word_right = letters[position[1]:].split("_")[0]
         full_word = word_left + word_right
         return ([letter for letter in full_word])
+
     def showBoard(self):
         print(Fore.GREEN + "+---------" * 15 + "+")
         for row in self.board:
@@ -73,9 +77,11 @@ class Board():
                     # Si hay una letra asignada a la celda
                     if cell.letter is not None:
                         if len(cell.letter.letter) == 1:
-                            formatted_row.append(f"{Fore.GREEN}|   {Fore.YELLOW}{cell.letter.letter}{cell.letter.value:2d}   ")
+                            formatted_row.append(
+                                f"{Fore.GREEN}|   {Fore.YELLOW}{cell.letter.letter}{cell.letter.value:2d}   ")
                         else:
-                            formatted_row.append(f"{Fore.GREEN}|  {Fore.YELLOW}{cell.letter.letter}{cell.letter.value:2d}   ")
+                            formatted_row.append(
+                                f"{Fore.GREEN}|  {Fore.YELLOW}{cell.letter.letter}{cell.letter.value:2d}   ")
                 # Si hay multiplicadores
                 elif cell.multiplier != 1:
                     formatted_row.append(f"{Fore.CYAN}| x{(cell.multiplier)}{(cell.multiplier_type):^6}")
@@ -84,3 +90,49 @@ class Board():
             formatted_row.append(Fore.GREEN + "|")
             print("".join(formatted_row))
             print(Fore.GREEN + "+---------" * 15 + "+")
+
+    # Tile tiene que llegar ordenado de como va en la palabra
+    def addTilesToBoard(self, letterToPlay, row, column, direction, board):
+        lenWord = len(letterToPlay)
+        if direction == 'h':
+            for i in range(column):
+                if len(letterToPlay) == 0:
+                    break
+                elif board.getTilesOnCell(row, column + i) is None:
+                    board.addTileOnCell(letterToPlay[0], row, column + i)
+                    letterToPlay.pop(0)
+
+        elif direction == 'v':
+            for i in range(row):
+                if len(letterToPlay) == 0:
+                    break
+                elif board.getTilesOnCell(row + i, column) is None:
+                    board.addTileOnCell(letterToPlay[0], row + i, column)
+                    letterToPlay.pop(0)
+
+        return self.calculateWordPoints(row, column, direction, board, lenWord)
+    def calculateWordPoints(self, row, column, direction, board, lengWord):
+        points = 0
+        multiplier = 1
+        if direction == 'h':
+            for i in range(lengWord):
+                cell = board.board[row][column+i]
+                points, multiplier = board.calculateLettersPoints(cell, multiplier, points)
+
+        elif direction == 'v':
+            for i in range(lengWord):
+                cell = board.board[row + i][column]
+                points, multiplier = board.calculateLettersPoints(cell, multiplier, points)
+
+        return points*multiplier
+    def calculateLettersPoints(self, cell, multiplier, points):
+        if (cell.multiplier_type == "word") and (cell.used is False):
+            multiplier *= cell.multiplier
+            cell.used = True
+        if (cell.multiplier_type == "letter") and (cell.used is False):
+            points += puntaje_por_letra[cell.letter.letter] * cell.multiplier
+            cell.used = True
+        else:
+            points += puntaje_por_letra[cell.letter.letter]
+
+        return points, multiplier
