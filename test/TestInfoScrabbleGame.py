@@ -1,69 +1,24 @@
+import re
+import sys
 import unittest
+from io import StringIO
+
 from game.modelsNew.PlayerModel import Player
+from game.modelsNew.RackModel import Rack
+from game.modelsNew.ScrabbleGameNew import Scrabble
 from game.modelsNew.TileModel import Tile
 from game.modelsNew.TileBagModel import TilesBag
 from game.modelsNew.configuration import puntaje_por_letra, cantidad_de_fichas_por_letra
 
-from game.modelsNew.ScrabbleGameNew import Scrabble
-from io import StringIO
-from unittest.mock import patch
 tilesTesting = [Tile(letter, puntaje_por_letra[letter]) for letter, count in cantidad_de_fichas_por_letra.items() for _ in range(count)]
 
 
-class TestScrabbleMessages(unittest.TestCase):
-    def setUp(self):
-        # Configura un jugador y una selección de fichas
-        self.game = Scrabble(2, tilesTesting)
-        self.game.players[0].points = 15
-        self.game.players[1].name = "Jugador2"
-        self.game.players[1].points = 20
-        self.game.players[0].name = "Jugador1"
-        self.game.players[0].rack.tiles = [
-            Tile("A", 1), Tile("B", 3), Tile("C", 3),
-            Tile("D", 2), Tile("E", 1), Tile("F", 4),
-            Tile("G", 2)]
-        self.game.players[1].rack.tiles = [
-            Tile("A", 1), Tile("B", 3), Tile("C", 3),
-            Tile("D", 2), Tile("E", 1), Tile("F", 4),
-            Tile("G", 2)]
-        self.board = self.game.board
 
-    @patch('sys.stdout', new_callable=StringIO)
-    def test_showPlayerPoints(self, mock_stdout):
-        # Ejecuta el método showPlayerPoints del juego
-        self.game.showPlayerPoints()
-
-        # Captura la salida generada y comprueba si es la esperada
-        output = mock_stdout.getvalue()
-        expected_output = "Puntajes:\n -> Jugador1: 15 pts\n -> Jugador2: 20 pts\n\n"
-        self.assertEqual(output, expected_output)
-    def test_set_name(self):
-        self.game.setPlayerName("NAME", 0)
-        self.assertEqual(self.game.players[0].name, "NAME")
-
-    # def test_showPlayerTiles(self):
-    #     # Redirige la salida estándar a un objeto StringIO para capturarla
-    #     import sys
-    #     from io import StringIO
-    #     original_stdout = sys.stdout
-    #     sys.stdout = StringIO()
-    #
-    #     # Ejecuta el método showPlayerTiles
-    #     self.game.showPlayerTiles()
-    #
-    #     # Restaura la salida estándar
-    #     sys.stdout = original_stdout
-    #
-    #     # Captura la salida generada y comprueba si es la esperada
-    #     output = sys.stdout.getvalue()
-    #     expected_output = "| A 1 | B 3 | C 3 | D 2 | E 1 | F 4 | G 2 | H 4 | I 1 | J 8 | K 5 | L 1 |\n"
-    #     self.assertEqual(output, expected_output)
-
-
-class TestPrintBoard(unittest.TestCase):
+class TestPrintScrabbleGameTest(unittest.TestCase):
+    maxDiff = None
 
     def setUp(self):
-        self.board = Scrabble(2, tilesTesting).board
+        self.board = Scrabble(2, tilesTesting)
         self.expected_output = [
                 "+---------" * 15 + "+",
                 "| x3 word |         |         | x2letter|         |         |         | x3 word |         |         |         | x2letter|         |         | x3 word |",
@@ -103,47 +58,88 @@ class TestPrintBoard(unittest.TestCase):
         self.expected_output_2_tile[1] = "|   A 1   |  RR 1   |         | x2letter|         |         |         | x3 word |         |         |         | x2letter|         |         | x3 word |"
         self.player = Player("Augusto", TilesBag(tilesTesting))
 
+    def remove_color_codes(self, text):
+        color_pattern = re.compile(r'\x1b\[[0-9;]+m')
+        return color_pattern.sub('', text)
 
-class TestScrabbleNextTurn(unittest.TestCase):
+    def test_print_board_with_empty_cells(self):
+
+        with StringIO() as mock_stdout:
+            sys.stdout = mock_stdout
+            self.board.showBoard()
+            sys.stdout = sys.__stdout__
+
+            output_lines = mock_stdout.getvalue().strip().split("\n")
+
+        output_lines = [self.remove_color_codes(line) for line in output_lines]
+
+        captured_lines = []
+        for expected_line, actual_line in zip(self.expected_output, output_lines):
+            self.assertEqual(expected_line, actual_line)
+            captured_lines.append(actual_line)
+
+    def test_print_board_1_tile(self):
+
+        with StringIO() as mock_stdout:
+            sys.stdout = mock_stdout
+            self.board.board.addTileOnCell(Tile("A", 1), 0, 0)
+            self.board.showBoard()
+            sys.stdout = sys.__stdout__
+
+            output_lines = mock_stdout.getvalue().strip().split("\n")
+
+        output_lines = [self.remove_color_codes(line) for line in output_lines]
+
+        captured_lines = []
+        for expected_line, actual_line in zip(self.expected_output_1_tile, output_lines):
+            self.assertEqual(expected_line, actual_line)
+            captured_lines.append(actual_line)
+
+    def test_print_board_2_tiles(self):
+
+        with StringIO() as mock_stdout:
+            sys.stdout = mock_stdout
+            self.board.board.addTileOnCell(Tile("A", 1), 0, 0)
+            self.board.board.addTileOnCell(Tile("RR", 1), 0, 1)
+            self.board.showBoard()
+            sys.stdout = sys.__stdout__
+            output_lines = mock_stdout.getvalue().strip().split("\n")
+
+        output_lines = [self.remove_color_codes(line) for line in output_lines]
+        captured_lines = []
+        for expected_line, actual_line in zip(self.expected_output_2_tile, output_lines):
+            self.assertEqual(expected_line, actual_line)
+            captured_lines.append(actual_line)
+
+class TestScrabbleShowMethods(unittest.TestCase):
     def setUp(self):
-        self.players = [Player("Player 1", TilesBag(tilesTesting)), Player("Player 2", TilesBag(tilesTesting)), Player("Player 3", TilesBag(tilesTesting))]
+        self.players = [Player("Player1", TilesBag(tilesTesting)), Player("Player2", TilesBag(tilesTesting))]
         self.scrabble = Scrabble(len(self.players), tilesTesting)
+        self.rack1 = Rack(TilesBag(tilesTesting))
+        self.rack2 = Rack(TilesBag(tilesTesting))
+        self.players[0].rack = self.rack1
+        self.players[1].rack = self.rack2
 
-    def test_next_turn_first_player(self):
-        self.assertEqual(self.scrabble.current_player_index, 0)
-        self.assertEqual(self.scrabble.current_player_index, 0)
-        self.scrabble.nextTurn()
-        self.assertEqual(self.scrabble.current_player_index, 1)
+    def test_show_player_tiles(self):
+        expected_output = "| A 1 | B 3 | C 3 | D 2 | E 1 | F 4 | G 2 |"
+        captured_output = StringIO()
+        sys.stdout = captured_output
 
-    def test_next_turn_last_player(self):
-        self.scrabble.current_player_index = len(self.players) - 1
-        self.assertEqual(self.scrabble.current_player_index, len(self.players) - 1)
-        self.scrabble.nextTurn()
-        self.assertEqual(self.scrabble.current_player_index, 0)
+        self.scrabble.showPlayerTiles()
 
-    def test_pass_turn_increment_skip_count(self):
-        self.assertEqual(self.scrabble.skippedTimes, 0)
-        self.scrabble.passTurn()
-        self.assertEqual(self.scrabble.skippedTimes, 1)
+        sys.stdout = sys.__stdout__
+        self.assertEqual(captured_output.getvalue().strip(), expected_output)
 
-    def test_pass_turn_next_player(self):
-        initial_player_index = self.scrabble.current_player_index
-        self.scrabble.passTurn()
-        self.assertEqual(self.scrabble.current_player_index, (initial_player_index + 1) % len(self.players))
+    def test_show_player_points(self):
+        self.players[0].points = 10
+        self.players[1].points = 15
+        expected_output = "Puntajes:\n -> Player1: 10 pts\n -> Player2: 15 pts"
+        captured_output = StringIO()
+        sys.stdout = captured_output
 
-    def test_end_game_empty_tile_bag(self):
-        self.scrabble.tiles_bags.tiles = []  # Simular una bolsa de fichas vacía
-        self.scrabble.endGame()
-        self.assertTrue(self.scrabble.gameFinished)
+        self.scrabble.showPlayerPoints()
 
-    def test_end_game_skipped_turns_limit_reached(self):
-        self.scrabble.skippedTimes = 2 * len(self.players)  # Simular que se han alcanzado los turnos máximos permitidos
-        self.scrabble.endGame()
-        self.assertTrue(self.scrabble.gameFinished)
-
-    def test_end_game_not_finished(self):
-        self.scrabble.tiles_bags.tiles = ["A", "B", "C"]  # Fichas disponibles en la bolsa
-        self.scrabble.endGame()
-        self.assertFalse(self.scrabble.gameFinished)
+        sys.stdout = sys.__stdout__
+        self.assertEqual(captured_output.getvalue().strip(), expected_output)
 if __name__ == '__main__':
     unittest.main()

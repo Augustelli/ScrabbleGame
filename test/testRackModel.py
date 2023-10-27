@@ -57,5 +57,12 @@ class TestRack(unittest.TestCase):
         self.rack.changeTiles(dto)
         self.assertEqual(len(self.rack.tiles), 7)
 
+    def test_add_tiles_to_player(self):
+        self.rack.addTileToPlayer()
+        self.assertEqual(len(self.rack.tiles), 7)
+        self.rack.tiles = []
+        self.rack.addTileToPlayer()
+        self.assertEqual(len(self.rack.tiles), 7)
+
 if __name__ == '__main__':
     unittest.main()

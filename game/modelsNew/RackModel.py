@@ -1,4 +1,4 @@
-from JugadaDTO.jugada_dto import JugadaDto  # noqa
+from game.JugadaDTO.jugada_dto import JugadaDto  # noqa
 import pdb  # noqa
 
 

@@ -3,7 +3,7 @@ import pdb
 from .configuration import coordenadas_multiplicadores, multiplicadores_valores
 from .CellModel import Cell
 from .TileModel import Tile
-from colorama import init, Fore
+from colorama import init
 from .configuration import puntaje_por_letra
 
 
@@ -39,7 +39,7 @@ class Board():
                     elif i == len_word_to_be_played - 1:
                         return False
             else:
-                return f"La palabra {word_to_be_played} no puede ser jugada en la posición {position} con la orientación {orientation} porque no hay espacio suficiente"  # noqa
+                return f"La palabra {word} no puede ser jugada en la posición con la orientación {direction} porque no hay espacio suficiente"  # noqa
         elif direction == "v":
             if row + (len_word_to_be_played - 1) <= 14:
                 for i in range(len_word_to_be_played):
@@ -48,7 +48,7 @@ class Board():
                     elif i == len_word_to_be_played - 1:
                         return False
             else:
-                return f"La palabra {word_to_be_played} no puede ser jugada en la posición {position} con la orientación {orientation} porque no hay espacio suficiente"  # noqa
+                return f"La palabra {word} no puede ser jugada en la posición con la orientación {direction} porque no hay espacio suficiente"  # noqa
     def getLettersInRowColumn(self, position, orientation):
         letters = ""
         x, y = position
@@ -63,11 +63,11 @@ class Board():
                 if self.board[i][y].letter is not None:
                     letters += self.board[i][y].letter.letter
                 else:
-                    letters += "_"
-        word_left = letters[:position[1]][::-1].split("_")[0][::-1]
-        word_right = letters[position[1]:].split("_")[0]
-        full_word = word_left + word_right
-        return ([letter for letter in full_word])
+                        letters += "_"
+            word_left = letters[:position[1]][::-1].split("_")[0][::-1]
+            word_right = letters[position[1]:].split("_")[0]
+            full_word = word_left + word_right
+        return [letter for letter in full_word]
 
     # Tile tiene que llegar ordenado de como va en la palabra
     def addTilesToBoard(self, letterToPlay, row, column, direction, board, playedWord):
@@ -114,3 +114,4 @@ class Board():
             points += puntaje_por_letra[cell.letter.letter]
 
         return points, multiplier
+

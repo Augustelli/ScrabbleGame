@@ -12,7 +12,7 @@ tiles = [Tile(letter, puntaje_por_letra[letter]) for letter, count in cantidad_d
 
 
 class Scrabble(object):
-    def __init__(self, players_count):
+    def __init__(self, players_count, tiles):
         self.board = Board()
         self.tiles_bags = TilesBag(tiles)
         self.players = [Player(None, self.tiles_bags) for _ in range(players_count)]
@@ -94,7 +94,6 @@ class Scrabble(object):
         self.current_player.rack.addTiles(playerWordTiles)
         if not tilesPlayedWord:
             return False
-
         # Poner las fichas en el tablero
         self.current_player.points += self.board.addTilesToBoard(lettersToPlay, row, column, direction, self.board, playedWord)
         self.current_player.addTiles()
@@ -102,13 +101,11 @@ class Scrabble(object):
         self.skippedTimes = 0
         self.firstPlay = False
 
-
     def nextTurn(self):
         self.current_player_index = (self.current_player_index + 1) % len(self.players)
         self.current_player = self.players[self.current_player_index]
 
     def passTurn(self):
-        print("Paso turno")
         self.skippedTimes += 1
         self.nextTurn()
 
@@ -118,15 +115,11 @@ class Scrabble(object):
             print("Juego terminado")
 
     def changeTiles(self):
-        print("ENTRO A CAMBIAR FICHAS")
         self.skippedTimes = 0
         while True:
-            print("ENTRO A WHILE")
             result = self.current_player.changeTiles()
             if result is not False:
-                print("YA CAMBIO LAS FICHAS")
                 self.nextTurn()
-                print("PASO DE TURNO")
                 break
             else:
                 print("La entrada es inválida. Por favor, ingrese las letras de las fichas que desea cambiar nuevamente.")
@@ -169,3 +162,4 @@ class Scrabble(object):
             print("".join(formatted_row))
             print(Fore.GREEN + "+---------" * 15 + "+")
         print()
+

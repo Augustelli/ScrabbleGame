@@ -1,8 +1,10 @@
 from modelsNew.ScrabbleGameNew import Scrabble
+from modelsNew.TileModel import Tile
+from modelsNew.configuration import puntaje_por_letra, cantidad_de_fichas_por_letra
 import os
-import pdb
 import time
 
+tiles = [Tile(letter, puntaje_por_letra[letter]) for letter, count in cantidad_de_fichas_por_letra.items() for _ in range(count)]
 
 def get_num_players():
     while True:
@@ -28,7 +30,7 @@ def main():
     print("¡Bienvenido a Scrabble!")
     num_players = get_num_players()
     player_names = get_player_names(num_players)
-    juego = Scrabble(num_players)
+    juego = Scrabble(num_players, tiles)
     # Seteo el nombre a los jugadoresi
     for i in range(num_players):
         print(f"Jugador {i+1}: {player_names[i]}")

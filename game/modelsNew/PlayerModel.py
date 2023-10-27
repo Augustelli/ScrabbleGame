@@ -1,5 +1,5 @@
 from .RackModel import Rack
-from JugadaDTO.jugada_dto import JugadaDto
+from game.JugadaDTO.jugada_dto import JugadaDto
 import random
 
 
@@ -17,7 +17,6 @@ class Player:
 
 
     def exchangeTiles(self):
-        print("ENTRO A PLAYER")
         incorrecto = True
         while incorrecto:
             tilesToExchangeStr = input("Ingrese las fichas que desea cambiar separadas por espacios: ").upper()

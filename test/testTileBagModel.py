@@ -1,7 +1,8 @@
 import unittest
-from game.modelsNew.TileBagModel import TilesBag  # Asegúrate de importar la clase TilesBag desde tu módulo
+from game.modelsNew.TileBagModel import TilesBag
 from game.modelsNew.TileModel import Tile
 from game.modelsNew.RackModel import Rack
+
 
 
 class TestTilesBag(unittest.TestCase):
@@ -21,7 +22,13 @@ class TestTilesBag(unittest.TestCase):
         tile_bag.putTiles(new_tiles)
         for tile in new_tiles:
             self.assertIn(tile, tile_bag.tiles)
+    def test_tile_equality(self):
+        tile1 = Tile('A', 1)
+        tile2 = Tile('A', 1)
+        tile3 = Tile('B', 3)
 
+        self.assertTrue(tile1 == tile2)
+        self.assertFalse(tile1 == tile3)
 
 if __name__ == '__main__':
     unittest.main()
