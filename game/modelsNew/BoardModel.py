@@ -15,7 +15,7 @@ class Board():
         for tipo, valores in coordenadas_multiplicadores.items():
             for i, j in valores:
                 if i == 7 and j == 7:
-                    self.board[i][j].add_letter = Tile("*", 0)
+                    self.board[i][j].letter = Tile("*", 0)
                 self.board[i][j] = Cell(multiplicadores_valores[tipo], tipo.split("_")[1])
 
     def __str__(self) -> str:
@@ -36,18 +36,20 @@ class Board():
             if column + (len_word_to_be_played - 1) <= 14:
                 for i in range(len_word_to_be_played):
                     if self.board[row][column + i].letter is not None:
-                        return f"La palabra {word_to_be_played} no puede ser jugada en la posición {position} con la orientación {orientation} porque hay una ficha en la posición {position[0]},{position[1] + i}"  # noqa
+                        return True  # noqa
+                    elif i == len_word_to_be_played - 1:
+                        return False
             else:
                 return f"La palabra {word_to_be_played} no puede ser jugada en la posición {position} con la orientación {orientation} porque no hay espacio suficiente"  # noqa
         elif direction == "v":
             if row + (len_word_to_be_played - 1) <= 14:
                 for i in range(len_word_to_be_played):
                     if self.board[row + i][column].letter is not None:
-                        return f"La palabra {word_to_be_played} no puede ser jugada en la posición {position} con la orientación {orientation} porque hay una ficha en la posición {position[0] + i},{position[1]}"  # noqa
+                        return True  # noqa
+                    elif i == len_word_to_be_played - 1:
+                        return False
             else:
                 return f"La palabra {word_to_be_played} no puede ser jugada en la posición {position} con la orientación {orientation} porque no hay espacio suficiente"  # noqa
-        return True
-
     def getLettersInRowColumn(self, position, orientation):
         letters = ""
         x, y = position
@@ -95,7 +97,7 @@ class Board():
     def addTilesToBoard(self, letterToPlay, row, column, direction, board):
         lenWord = len(letterToPlay)
         if direction == 'h':
-            for i in range(column):
+            for i in range(lenWord):
                 if len(letterToPlay) == 0:
                     break
                 elif board.getTilesOnCell(row, column + i) is None:
@@ -103,7 +105,7 @@ class Board():
                     letterToPlay.pop(0)
 
         elif direction == 'v':
-            for i in range(row):
+            for i in range(lenWord):
                 if len(letterToPlay) == 0:
                     break
                 elif board.getTilesOnCell(row + i, column) is None:

@@ -20,6 +20,7 @@ class Scrabble(object):
         self.current_player = self.players[self.current_player_index]
         self.skippedTimes = 0
         self.gameFinished = False
+        self.firstPlay = True
 
     def setPlayerName(self, name, index):
         self.players[index].name = name
@@ -48,33 +49,44 @@ class Scrabble(object):
     # 3 Validar que la palabra entre en el tablero
     # 4 Calcular puntos
     def playWord(self, playedWord):
-        print("ENTRO A PLAY WORD: "+playedWord)
         validWord = validate_word_on_rae(playedWord)
         if not validWord:
             print("La palabra no existe en la RAE.")
             return False  # Ver qué devolver
-        positionAndDirection = input("Ingrese la posición y dirección de la palabra (ej: 1 1 h): ").split()
+
+        positionAndDirection = input("Ingrese la posición y dirección de la palabra  COLUMNA  FILA  DIRECCIÓN : (ej: 1 1 h): ").split()
 
         row = int(positionAndDirection[0]) - 1
         column = int(positionAndDirection[1]) - 1
         direction = positionAndDirection[2].lower()
-
+        wordCanBePlaced = True
         # Corroborar que la palabra entre en el tablero
-        wordCanBePlaced = self.board.checkIfWordCanBePlaced(playedWord, row, column, direction)
-        if wordCanBePlaced is not True:  # Checkear qué devolver para el user.
-            print(wordCanBePlaced)
+        if not self.firstPlay:
+            wordCanBePlaced = self.board.checkIfWordCanBePlaced(playedWord, row, column, direction)
+        else:
+            if direction == "h":
+                if column + (len(playedWord) - 1) > 14:
+                    wordCanBePlaced = False
+            elif direction == 'v':
+                if row + (len(playedWord) - 1) > 14:
+                    wordCanBePlaced = False #
+
+        if wordCanBePlaced is not True:
+            print("La palabra no cabe en el tablero")
             return False
         # Ver qué tiles debo poner en el tablero para formar la palabra con los que tengo.
         tilesOnBoard = self.board.getLettersInRowColumn((row, column), direction)
         playerWordTiles=self.current_player.rack.returnTiles(playedWord)  # Tiles que tiene el jugador sobre la palabra jugada
-        tilesPlayedWord = [Tile(letter, 1) for letter in playedWord.upper()]
+        tilesPlayedWord = [Tile(letter, puntaje_por_letra[letter]) for letter in playedWord.upper()]
         lettersToPlay = []
+
         if len(tilesOnBoard) != 0:
             for letter in tilesPlayedWord:
-                for i in range(len(tilesPlayedWord)):
-                    if letter == tilesOnBoard[i]:
-                        tilesPlayedWord.remove(letter)
-                        break
+                if len(tilesPlayedWord) != 0:
+                    for i in range(len(tilesPlayedWord)):
+                        if letter.letter == tilesOnBoard[i]:
+                            tilesPlayedWord.remove(letter)
+                            break
 
         for letter in tilesPlayedWord:
             if letter in playerWordTiles:
@@ -90,6 +102,7 @@ class Scrabble(object):
         self.current_player.rack.addTileToPlayer(len(playedWord))
         self.nextTurn()
         self.skippedTimes = 0
+        self.firstPlay = False
 
 
     def nextTurn(self):
