@@ -16,7 +16,7 @@ class Player:
         return f"Nombre: {self.name}\n  - Puntuación: {self.points}\n  - Rack: {rack_str}"
 
 
-    def exchangeTiles(self):
+    def     exchangeTiles(self):
         incorrecto = True
         while incorrecto:
             tilesToExchangeStr = input("Ingrese las fichas que desea cambiar separadas por espacios: ").upper()

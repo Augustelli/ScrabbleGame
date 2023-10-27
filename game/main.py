@@ -1,6 +1,6 @@
-from modelsNew.ScrabbleGameNew import Scrabble
-from modelsNew.TileModel import Tile
-from modelsNew.configuration import puntaje_por_letra, cantidad_de_fichas_por_letra
+from .modelsNew.ScrabbleGameNew import Scrabble
+from .modelsNew.TileModel import Tile
+from .modelsNew.configuration import puntaje_por_letra, cantidad_de_fichas_por_letra
 import os
 import time
 

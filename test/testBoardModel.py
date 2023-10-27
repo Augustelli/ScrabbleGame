@@ -41,31 +41,31 @@ class TestBoardModel(unittest.TestCase):
         self.assertEqual(self.board.checkIfWordCanBePlaced(word, row, column, direction), response)
 
     def test_getLettersInRowColumn(self):
-        # Verifica si se obtienen correctamente las letras en una fila/columna.
         letters = self.board.getLettersInRowColumn((7, 7), "h")
-        expected_letters = "A"  # Asumiendo que hay una "A" en la celda central.
+        expected_letters = ["A"]
         self.assertEqual(letters, expected_letters)
 
     def test_addTilesToBoard(self):
-        # Verifica si se añaden correctamente las fichas al tablero y se calcula el puntaje.
         letter_to_play = [Tile("X", 8), Tile("Y", 10)]
         score = self.board.addTilesToBoard(letter_to_play, 5, 5, "h", self.board, "XY")
-        expected_score = 28  # El puntaje es la suma de los valores de "X" y "Y".
+        expected_score = 28
         self.assertEqual(score, expected_score)
 
     def test_calculateWordPoints(self):
-        # Verifica si se calculan correctamente los puntos de una palabra.
+        self.board.board[1][1].letter = Tile("A", 1)
+        self.board.board[2][1].letter = Tile("A", 1)
+        self.board.board[3][1].letter = Tile("A", 1)
         points = self.board.calculateWordPoints(1, 1, "v", self.board, 3)
-        expected_points = 12  # Asumiendo que las celdas tienen valores correctos.
+        expected_points = 6
         self.assertEqual(points, expected_points)
 
     def test_calculateLettersPoints(self):
         # Verifica si se calculan correctamente los puntos de una celda.
-        cell = self.board.board[0][0]  # Asegúrate de tener una celda configurada correctamente.
+        cell = self.board.board[0][0]
         multiplier = 1
         points = 0
         points, multiplier = self.board.calculateLettersPoints(cell, multiplier, points)
-        expected_points = 1  # Asumiendo que la celda tiene un valor de 2.
+        expected_points = 1
         self.assertEqual(points, expected_points)
 if __name__ == '__main__':
     unittest.main()

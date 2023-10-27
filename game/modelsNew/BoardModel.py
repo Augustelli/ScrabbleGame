@@ -63,11 +63,11 @@ class Board():
                 if self.board[i][y].letter is not None:
                     letters += self.board[i][y].letter.letter
                 else:
-                        letters += "_"
-            word_left = letters[:position[1]][::-1].split("_")[0][::-1]
-            word_right = letters[position[1]:].split("_")[0]
-            full_word = word_left + word_right
-        return [letter for letter in full_word]
+                    letters += "_"
+        word_left = letters[:position[1]][::-1].split("_")[0][::-1]
+        word_right = letters[position[1]:].split("_")[0]
+        full_word = word_left + word_right
+        return ([letter for letter in full_word])
 
     # Tile tiene que llegar ordenado de como va en la palabra
     def addTilesToBoard(self, letterToPlay, row, column, direction, board, playedWord):
