@@ -18,8 +18,7 @@ class Board():
                     self.board[i][j].letter = Tile("*", 0)
                 self.board[i][j] = Cell(multiplicadores_valores[tipo], tipo.split("_")[1])
 
-    def __str__(self) -> str:
-        return f"{self.board}"
+
 
     def getTilesOnCell(self, row, column):
         return self.board[row][column].letter
@@ -69,29 +68,6 @@ class Board():
         word_right = letters[position[1]:].split("_")[0]
         full_word = word_left + word_right
         return ([letter for letter in full_word])
-
-    def showBoard(self):
-        print(Fore.GREEN + "+---------" * 15 + "+")
-        for row in self.board:
-            formatted_row = []
-            for cell in row:
-                if isinstance(cell.letter, Tile):
-                    # Si hay una letra asignada a la celda
-                    if cell.letter is not None:
-                        if len(cell.letter.letter) == 1:
-                            formatted_row.append(
-                                f"{Fore.GREEN}|   {Fore.YELLOW}{cell.letter.letter}{cell.letter.value:2d}   ")
-                        else:
-                            formatted_row.append(
-                                f"{Fore.GREEN}|  {Fore.YELLOW}{cell.letter.letter}{cell.letter.value:2d}   ")
-                # Si hay multiplicadores
-                elif cell.multiplier != 1:
-                    formatted_row.append(f"{Fore.CYAN}| x{(cell.multiplier)}{(cell.multiplier_type):^6}")
-                else:
-                    formatted_row.append(f"{Fore.GREEN}|{Fore.WHITE:^14}")
-            formatted_row.append(Fore.GREEN + "|")
-            print("".join(formatted_row))
-            print(Fore.GREEN + "+---------" * 15 + "+")
 
     # Tile tiene que llegar ordenado de como va en la palabra
     def addTilesToBoard(self, letterToPlay, row, column, direction, board, playedWord):

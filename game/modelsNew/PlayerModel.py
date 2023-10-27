@@ -37,5 +37,3 @@ class Player:
 
     def addTiles(self):
         self.rack.addTileToPlayer()
-    def isRackEmpty(self):
-        return self.rack.isEmpty()
