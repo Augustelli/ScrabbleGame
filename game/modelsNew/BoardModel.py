@@ -94,8 +94,8 @@ class Board():
             print(Fore.GREEN + "+---------" * 15 + "+")
 
     # Tile tiene que llegar ordenado de como va en la palabra
-    def addTilesToBoard(self, letterToPlay, row, column, direction, board):
-        lenWord = len(letterToPlay)
+    def addTilesToBoard(self, letterToPlay, row, column, direction, board, playedWord):
+        lenWord = len(playedWord)
         if direction == 'h':
             for i in range(lenWord):
                 if len(letterToPlay) == 0:

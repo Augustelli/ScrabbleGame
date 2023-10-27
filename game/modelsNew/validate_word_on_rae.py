@@ -17,7 +17,7 @@ def validate_word_on_rae(word):
             soup = BeautifulSoup(contenido, 'html.parser')
             no_word_found_phrases = [
                 f"Aviso: La palabra {word} no está en el Diccionario.",
-                f"Aviso: La palabra {word} no está en el Diccionario. La entrada que se muestra a continuación podría estar relacionada:",
+                 # f"Aviso: La palabra {word} no está en el Diccionario. La entrada que se muestra a continuación podría estar relacionada:",
                 "Aviso: La palabra no está en el Diccionario."
             ]
             for phrase in no_word_found_phrases:
@@ -26,7 +26,6 @@ def validate_word_on_rae(word):
             return True
 
         else:
-            # TODO: Agregar la opcion para buscar en dictionary
             print(f'La solicitud no fue exitosa. Código de estado: {response.status_code}')
             return False
 

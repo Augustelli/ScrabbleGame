@@ -81,12 +81,11 @@ class Scrabble(object):
         lettersToPlay = []
 
         if len(tilesOnBoard) != 0:
-            for letter in tilesPlayedWord:
-                if len(tilesPlayedWord) != 0:
-                    for i in range(len(tilesPlayedWord)):
-                        if letter.letter == tilesOnBoard[i]:
-                            tilesPlayedWord.remove(letter)
-                            break
+            for letter in tilesOnBoard:
+                for i in range(len(tilesOnBoard)):
+                    if letter == tilesPlayedWord[i].letter:
+                        tilesPlayedWord.pop(i)
+                        break
 
         for letter in tilesPlayedWord:
             if letter in playerWordTiles:
@@ -98,8 +97,8 @@ class Scrabble(object):
             return False
 
         # Poner las fichas en el tablero
-        self.current_player.points += self.board.addTilesToBoard(lettersToPlay, row, column, direction, self.board)
-        self.current_player.rack.addTileToPlayer(len(playedWord))
+        self.current_player.points += self.board.addTilesToBoard(lettersToPlay, row, column, direction, self.board, playedWord)
+        self.current_player.rack.addTileToPlayer(len(lettersToPlay))
         self.nextTurn()
         self.skippedTimes = 0
         self.firstPlay = False
