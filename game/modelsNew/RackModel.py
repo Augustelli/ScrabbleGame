@@ -17,8 +17,8 @@ class Rack:
     def addTiles(self, tiles: list):
         self.tiles.extend(tiles)
 
-    def addTileToPlayer(self,numberOfTiles):
-        self.tiles.extend(self.tilebag.getTiles(numberOfTiles))
+    def addTileToPlayer(self):
+        self.tiles.extend(self.tilebag.getTiles(7 - len(self.tiles)))
     """
     Doy una palabra y me devuelve los tiles que necesito para formarla
     Si no tengo alguno, devuelve los que tenga

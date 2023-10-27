@@ -36,16 +36,13 @@ def main():
     time.sleep(1)
     os.system("clear")
     while not juego.gameFinished:
-        print('-'*50)
+        print('-'*350)
         print("Para realizar jugadas: \n\t- Ingrese la palabra que desea jugar.\n\t- Si desea cambiar fichas, ingrese 'change'.\n\t- Si desea pasar el turno, ingrese 'skip o  ENTER'.")
-        print('-'*50)
-        print("\n")
+        print('-'*350)
         print(f"Turno de {juego.current_player.name}: ")
         print("     1         2         3         4         5         6         7         8         9         10       11        12         13        14        15  ")
         juego.showTurnInfo()
         accion_ingresada = input("Ingrese una acción: ").lower()
-        print("\n")
-        print('-'*50)
         if accion_ingresada == "skip" or accion_ingresada == "":
             juego.passTurn()
         elif accion_ingresada == "change":
@@ -54,6 +51,7 @@ def main():
             juego.skippedTimes = 0
         else:
             juego.playWord(accion_ingresada) # Palabra a jugar
+            time.sleep(1.5)
         os.system("clear")
         juego.endGame()
 

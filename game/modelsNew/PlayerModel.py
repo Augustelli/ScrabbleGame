@@ -15,8 +15,6 @@ class Player:
         rack_str = ', '.join(str(tile) for tile in self.rack.tiles)
         return f"Nombre: {self.name}\n  - Puntuación: {self.points}\n  - Rack: {rack_str}"
 
-    def play_word(self, word):
-        pass
 
     def exchangeTiles(self):
         print("ENTRO A PLAYER")
@@ -37,5 +35,7 @@ class Player:
 
         return self.rack.changeTiles(dtoCambio)
 
+    def addTiles(self):
+        self.rack.addTileToPlayer()
     def isRackEmpty(self):
         return self.rack.isEmpty()

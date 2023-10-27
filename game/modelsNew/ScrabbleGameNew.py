@@ -49,15 +49,14 @@ class Scrabble(object):
     # 3 Validar que la palabra entre en el tablero
     # 4 Calcular puntos
     def playWord(self, playedWord):
-        validWord = validate_word_on_rae(playedWord)
-        if not validWord:
+        if not validate_word_on_rae(playedWord):
             print("La palabra no existe en la RAE.")
             return False  # Ver qué devolver
 
         positionAndDirection = input("Ingrese la posición y dirección de la palabra  COLUMNA  FILA  DIRECCIÓN : (ej: 1 1 h): ").split()
 
-        row = int(positionAndDirection[0]) - 1
-        column = int(positionAndDirection[1]) - 1
+        column = int(positionAndDirection[0]) - 1
+        row = int(positionAndDirection[1]) - 1
         direction = positionAndDirection[2].lower()
         wordCanBePlaced = True
         # Corroborar que la palabra entre en el tablero
@@ -98,7 +97,7 @@ class Scrabble(object):
 
         # Poner las fichas en el tablero
         self.current_player.points += self.board.addTilesToBoard(lettersToPlay, row, column, direction, self.board, playedWord)
-        self.current_player.rack.addTileToPlayer(len(lettersToPlay))
+        self.current_player.addTiles()
         self.nextTurn()
         self.skippedTimes = 0
         self.firstPlay = False
