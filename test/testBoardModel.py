@@ -1,8 +1,8 @@
+import pdb
 import unittest
 import parameterized
 from game.modelsNew.BoardModel import Board
 from game.modelsNew.TileModel import Tile
-
 
 
 class TestBoardModel(unittest.TestCase):
@@ -40,8 +40,13 @@ class TestBoardModel(unittest.TestCase):
     def test_check_if_word_can_be_placed(self, word, row, column, direction, response):
         self.assertEqual(self.board.checkIfWordCanBePlaced(word, row, column, direction), response)
 
-    def test_getLettersInRowColumn(self):
-        letters = self.board.getLettersInRowColumn((7, 7), "h")
+
+    @parameterized.parameterized.expand([
+        (7, 7, 'h'),
+        (7, 7, 'v')
+    ])
+    def test_getLettersInRowColumn(self, row, column, direction):
+        letters = self.board.getLettersInRowColumn((row, column), direction)
         expected_letters = ["A"]
         self.assertEqual(letters, expected_letters)
 
@@ -50,6 +55,14 @@ class TestBoardModel(unittest.TestCase):
         score = self.board.addTilesToBoard(letter_to_play, 5, 5, "h", self.board, "XY")
         expected_score = 28
         self.assertEqual(score, expected_score)
+
+    def test_addTilesToBoard_vertical(self):
+        # Configura un caso de prueba con orientación vertical.
+        self.board = Board()
+        letterToPlay = [Tile("A", 1), Tile("A", 1), Tile("A", 1)]  # Lista ordenada como se juegan las fichas.
+        self.board.addTilesToBoard(letterToPlay, 2, 5, "v", self.board, "AAA")
+        for i, tile in enumerate([Tile("A", 1), Tile("A", 1), Tile("A", 1)]):
+            self.assertEqual(self.board.getTilesOnCell(2 + i, 5), tile)
 
     def test_calculateWordPoints(self):
         self.board.board[1][1].letter = Tile("A", 1)

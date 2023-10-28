@@ -25,25 +25,6 @@ class Scrabble(object):
     def setPlayerName(self, name, index):
         self.players[index].name = name
 
-    def __str__(self) -> str:
-        players_info = "\n".join([f"- {player}" for player in self.players])
-
-        return f"""
-    * TileBag:
-        - Cantidad de fichas: {len(self.tiles_bags.tiles)}
-        - Fichas: {self.tiles_bags}
-
-    * Jugadores:
-        - Cantidad: {len(self.players)}
-        - Index: {self.current_player_index} | {self.current_player.name}
-
-    * Jugador Actual :
-    {players_info}
-
-    * Veces que se pasó el turno: {self.skippedTimes}
-
-    * Juego terminado: {self.gameFinished}
-"""
     # 1 Validar palabra RAE
     # 2 Validar que el jugador tiene las fichas necesarias
     # 3 Validar que la palabra entre en el tablero
@@ -51,7 +32,7 @@ class Scrabble(object):
     def playWord(self, playedWord):
         if not validate_word_on_rae(playedWord):
             print("La palabra no existe en la RAE.")
-            return False  # Ver qué devolver
+            return False
 
         positionAndDirection = input("Ingrese la posición y dirección de la palabra  COLUMNA  FILA  DIRECCIÓN : (ej: 1 1 h): ").split()
 
@@ -110,7 +91,7 @@ class Scrabble(object):
         self.nextTurn()
 
     def endGame(self):
-        if (not self.tiles_bags.tiles) or (self.skippedTimes == 2*len(self.players)):
+        if (self.tiles_bags.isTileBagEmpty()) or (self.skippedTimes == 2*len(self.players)):
             self.gameFinished = True
             print("Juego terminado")
 

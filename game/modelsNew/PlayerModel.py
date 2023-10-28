@@ -10,13 +10,7 @@ class Player:
         self.name = name if name is not None else f"Jugador{random.randint(0, 99):02d}"
         self.points = 0
 
-    def __str__(self):
-        # Convierte cada ficha (Tile) a cadena antes de unirlas
-        rack_str = ', '.join(str(tile) for tile in self.rack.tiles)
-        return f"Nombre: {self.name}\n  - Puntuación: {self.points}\n  - Rack: {rack_str}"
-
-
-    def     exchangeTiles(self):
+    def exchangeTiles(self):
         incorrecto = True
         while incorrecto:
             tilesToExchangeStr = input("Ingrese las fichas que desea cambiar separadas por espacios: ").upper()

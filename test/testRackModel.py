@@ -4,7 +4,6 @@ from game.modelsNew.TileBagModel import TilesBag
 from game.modelsNew.TileModel import Tile
 from game.modelsNew.configuration import puntaje_por_letra, cantidad_de_fichas_por_letra
 import pdb  # noqa
-from game.JugadaDTO.jugada_dto import JugadaDto
 
 
 class TestRack(unittest.TestCase):
@@ -50,12 +49,6 @@ class TestRack(unittest.TestCase):
         self.assertFalse(self.rack.isEmpty())
         self.rack.tiles = []
         self.assertTrue(self.rack.isEmpty())
-
-    def test_change_tiles_method(self):
-        self.rack.tiles = [Tile('B', 3), Tile('E', 1), Tile('E', 1), Tile('F', 4), Tile('G', 2), Tile('G', 2), Tile('G', 2)]
-        dto = JugadaDto.intercambioDeFichas(['B', 'E', 'F'], ['B', 'E', 'F'])
-        self.rack.changeTiles(dto)
-        self.assertEqual(len(self.rack.tiles), 7)
 
     def test_add_tiles_to_player(self):
         self.rack.addTileToPlayer()

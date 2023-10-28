@@ -7,11 +7,6 @@ class TilesBag:
         self.tiles = list(tiles)
         random.shuffle(self.tiles)
 
-    def __str__(self):
-        # Convierte cada ficha (Tile) a cadena antes de unirlas
-        tile_str = ', '.join(str(tile) for tile in self.tiles)
-        return f"TileBag:\n  - Cantidad de fichas: {len(self.tiles)}\n  - Fichas: {tile_str}"
-
     def getTiles(self, count):
         tiles_taken = []
         if count <= len(self.tiles):
@@ -25,3 +20,6 @@ class TilesBag:
     def putTiles(self, tiles):
         self.tiles.extend(tiles)
         random.shuffle(self.tiles)
+
+    def isTileBagEmpty(self):
+        return len(self.tiles) == 0

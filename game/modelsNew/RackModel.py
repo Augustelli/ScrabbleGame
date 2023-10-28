@@ -9,10 +9,6 @@ class Rack:
         self.maxTiles = 7
         self.tilebag = tilebag
 
-    def __str__(self):
-        # pragma: no cover
-        tile_str = ', '.join(str(tile) for tile in self.tiles)
-        return f"Rack:\n  - Cantidad de fichas: {len(self.tiles)}\n  - Fichas: {tile_str}"
 
     def addTiles(self, tiles: list):
         self.tiles.extend(tiles)

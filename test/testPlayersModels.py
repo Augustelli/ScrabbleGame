@@ -9,18 +9,13 @@ from game.modelsNew.configuration import puntaje_por_letra, cantidad_de_fichas_p
 tilesTesting = [Tile(letter, puntaje_por_letra[letter]) for letter, count in cantidad_de_fichas_por_letra.items() for _ in range(count)]
 
 
-class MyTestCase(unittest.TestCase):
+class TestPlayers(unittest.TestCase):
 
     def setUp(self):
 
         self.player = Player("PLAYER 1", TilesBag(tilesTesting))
         self.player2 = Player("PLAYER 2", TilesBag(tilesTesting))
 
-
-    # def test_exchange_tiles(self):
-    #     self.assertEqual(len(self.player.rack.tiles), 7)
-    #     self.player.rack.tiles = [Tile("A"), 1,Tile("B"), 1]
-    #     self.player.exchangeTiles()
 
     def test_add_tiles(self):
         self.assertEqual(len(self.player.rack.tiles), 7)

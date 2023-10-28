@@ -7,7 +7,7 @@ from colorama import init
 from .configuration import puntaje_por_letra
 
 
-class Board():
+class Board:
 
     def __init__(self):
         self.board = [[Cell(1, "") for _ in range(15)] for _ in range(15)]
@@ -17,8 +17,6 @@ class Board():
                 if i == 7 and j == 7:
                     self.board[i][j].letter = Tile("*", 0)
                 self.board[i][j] = Cell(multiplicadores_valores[tipo], tipo.split("_")[1])
-
-
 
     def getTilesOnCell(self, row, column):
         return self.board[row][column].letter
