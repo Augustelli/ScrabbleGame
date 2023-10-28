@@ -52,7 +52,7 @@ class TestBoardModel(unittest.TestCase):
 
     def test_addTilesToBoard(self):
         letter_to_play = [Tile("X", 8), Tile("Y", 10)]
-        score = self.board.addTilesToBoard(letter_to_play, 5, 5, "h", self.board, "XY")
+        score = self.board.addTilesToBoard(letter_to_play,[ 5, 5, "h"], self.board, "XY")
         expected_score = 28
         self.assertEqual(score, expected_score)
 
@@ -60,7 +60,7 @@ class TestBoardModel(unittest.TestCase):
         # Configura un caso de prueba con orientación vertical.
         self.board = Board()
         letterToPlay = [Tile("A", 1), Tile("A", 1), Tile("A", 1)]  # Lista ordenada como se juegan las fichas.
-        self.board.addTilesToBoard(letterToPlay, 2, 5, "v", self.board, "AAA")
+        self.board.addTilesToBoard(letterToPlay, [2, 5, "v"], self.board, "AAA")
         for i, tile in enumerate([Tile("A", 1), Tile("A", 1), Tile("A", 1)]):
             self.assertEqual(self.board.getTilesOnCell(2 + i, 5), tile)
 
