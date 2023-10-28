@@ -8,14 +8,12 @@ tiles = [Tile(letter, puntaje_por_letra[letter]) for letter, count in cantidad_d
 
 def get_num_players():
     while True:
-        try:
-            num_players = int(input("Seleccione la cantidad de jugadores (2-4): "))
+        num_players = input("Seleccione la cantidad de jugadores (2-4): ")
+        if num_players.isdigit():
+            num_players = int(num_players)
             if 2 <= num_players <= 4:
                 return num_players
-            else:
-                print("Ingrese un número válido (2-4).")
-        except ValueError:
-            print("Ingrese un número válido (2-4).")
+        print("Ingrese un número válido (2-4).")
 
 
 def get_player_names(num_players):

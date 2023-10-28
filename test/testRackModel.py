@@ -1,4 +1,6 @@
 import unittest
+
+from game.JugadaDTO.jugada_dto import JugadaDto
 from game.modelsNew.RackModel import Rack
 from game.modelsNew.TileBagModel import TilesBag
 from game.modelsNew.TileModel import Tile
@@ -6,12 +8,12 @@ from game.modelsNew.configuration import puntaje_por_letra, cantidad_de_fichas_p
 import pdb  # noqa
 
 
+tiles_test = [Tile(letter, puntaje_por_letra[letter]) for letter, count in cantidad_de_fichas_por_letra.items() for _ in range(count)]
 class TestRack(unittest.TestCase):
-    tiles_test = [Tile(letter, puntaje_por_letra[letter]) for letter, count in cantidad_de_fichas_por_letra.items() for _ in range(count)]
 
     def setUp(self):
 
-        self.tilebag = TilesBag(self.tiles_test)
+        self.tilebag = TilesBag(    tiles_test)
         self.rack = Rack(self.tilebag)
 
     def test_addTiles(self):

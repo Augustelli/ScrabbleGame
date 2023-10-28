@@ -20,14 +20,28 @@ class Rack:
     Si no tengo alguno, devuelve los que tenga
     """
     def returnTiles(self, word):
+        word = word.upper()
         tileToReturn = []
         for letter in word:
             for tile in self.tiles:
-                if tile.letter == letter.upper():
+                if tile.letter == letter:
                     tileToReturn.append(tile)
                     self.tiles.remove(tile)
                     break
         return tileToReturn
+
+    # def returnTiles(self, word):
+    #     word = word.upper()  # Convertimos la palabra a mayúsculas para que coincida con las fichas
+    #     tileToReturn = []
+    #
+    #     for letter in word:
+    #         for tile in self.tiles:
+    #             if tile.letter == letter:
+    #                 tileToReturn.append(tile)
+    #                 self.tiles.remove(tile)
+    #                 break  # Rompemos el bucle interno después de encontrar una ficha
+    #
+    #     return tileToReturn
 
     # Método de intercambio con Tilebag
     def changeTiles(self, dtoCambio):

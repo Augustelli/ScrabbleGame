@@ -86,10 +86,11 @@ class Board:
                     board.addTileOnCell(letterToPlay[0], row + i, column)
                     letterToPlay.pop(0)
 
-        return self.calculateWordPoints(row, column, direction, board, lenWord)
-    def calculateWordPoints(self, row, column, direction, board, lengWord):
+        return self.calculateWordPoints([row, column], direction, board, lenWord)
+    def calculateWordPoints(self, position, direction, board, lengWord):
         points = 0
         multiplier = 1
+        row, column = position
         if direction == 'h':
             for i in range(lengWord):
                 cell = board.board[row][column+i]

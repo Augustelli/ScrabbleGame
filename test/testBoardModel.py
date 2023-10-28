@@ -68,7 +68,7 @@ class TestBoardModel(unittest.TestCase):
         self.board.board[1][1].letter = Tile("A", 1)
         self.board.board[2][1].letter = Tile("A", 1)
         self.board.board[3][1].letter = Tile("A", 1)
-        points = self.board.calculateWordPoints(1, 1, "v", self.board, 3)
+        points = self.board.calculateWordPoints([1, 1],  "v", self.board, 3)
         expected_points = 6
         self.assertEqual(points, expected_points)
 
