@@ -74,36 +74,18 @@ class Board:
         lenWord = len(playedWord)
         if direction == 'h':
             for i in range(lenWord):
-                if len(letterToPlay) == 0:
-                    break
-                elif board.getTilesOnCell(row, column + i) is None:
+                if board.getTilesOnCell(row, column + i) is None:
                     board.addTileOnCell(letterToPlay[0], row, column + i)
                     letterToPlay.pop(0)
 
         elif direction == 'v':
             for i in range(lenWord):
-                if len(letterToPlay) == 0:
-                    break
-                elif board.getTilesOnCell(row + i, column) is None:
+                if board.getTilesOnCell(row + i, column) is None:
                     board.addTileOnCell(letterToPlay[0], row + i, column)
                     letterToPlay.pop(0)
 
         return self.calculateWordPoints([row, column], direction, board, lenWord)
-    def calculateWordPoints(self, position, direction, board, lengWord):
-        points = 0
-        multiplier = 1
-        row, column = position
-        if direction == 'h':
-            for i in range(lengWord):
-                cell = board.board[row][column+i]
-                points, multiplier = board.calculateLettersPoints(cell, multiplier, points)
 
-        elif direction == 'v':
-            for i in range(lengWord):
-                cell = board.board[row + i][column]
-                points, multiplier = board.calculateLettersPoints(cell, multiplier, points)
-
-        return points*multiplier
     def calculateLettersPoints(self, cell, multiplier, points):
         if (cell.multiplier_type == "word") and (cell.used is False):
             multiplier *= cell.multiplier
@@ -115,4 +97,31 @@ class Board:
             points += puntaje_por_letra[cell.letter.letter]
 
         return points, multiplier
+
+    def calculateHorizontalPoints(self, position, board, lengWord):
+        row, column = position
+        points = 0
+        multiplier = 1
+        for i in range(lengWord):
+            cell = board.board[row][column+i]
+            points, multiplier = board.calculateLettersPoints(cell, multiplier, points)
+        return points*multiplier
+
+    def calculateVertical(self, position, board, lengWord):
+        row, column = position
+        points = 0
+        multiplier = 1
+        for i in range(lengWord):
+            cell = board.board[row+i][column]
+            points, multiplier = board.calculateLettersPoints(cell, multiplier, points)
+        return  points*multiplier
+
+    def calculateWordPoints(self, position, direction, board, lengWord):
+        points = 0
+        if direction == 'h':
+            points = self.calculateHorizontalPoints(position, board, lengWord)
+        elif direction == 'v':
+            points = self.calculateVertical(position, board, lengWord)
+        return points
+
 
