@@ -54,9 +54,8 @@ class Scrabble(object):
         if wordCanBePlaced is not True:
             print("La palabra no cabe en el tablero")
             return False
-        # Ver qué tiles debo poner en el tablero para formar la palabra con los que tengo.
         tilesOnBoard = self.board.getLettersInRowColumn((row, column), direction)
-        playerWordTiles=self.current_player.rack.returnTiles(playedWord)  # Tiles que tiene el jugador sobre la palabra jugada
+        playerWordTiles=self.current_player.rack.returnTiles(playedWord)
         tilesPlayedWord = [Tile(letter, puntaje_por_letra[letter]) for letter in playedWord.upper()]
         lettersToPlay = []
 
@@ -76,7 +75,7 @@ class Scrabble(object):
         if not tilesPlayedWord:
             return False
         # Poner las fichas en el tablero
-        self.current_player.points += self.board.addTilesToBoard(lettersToPlay, row, column, direction, self.board, playedWord)
+        self.current_player.points += self.board.addTilesToBoard(lettersToPlay, [row, column, direction], self.board, playedWord)
         self.current_player.addTiles()
         self.nextTurn()
         self.skippedTimes = 0
@@ -107,6 +106,7 @@ class Scrabble(object):
 
     def showTurnInfo(self):
         self.showBoard()
+        print("\n")
         self.showPlayerTiles()
         self.showPlayerPoints()
 
@@ -120,27 +120,20 @@ class Scrabble(object):
         for player in self.players:
             print(f" -> {player.name}: {player.points} pts")
         print()
+
     def showBoard(self):
-        print(Fore.GREEN + "+---------" * 15 + "+")
-        for row in self.board.board:
-            formatted_row = []
+        for i, row in enumerate(self.board.board, start=1):
+            print(f"{i:2d} ", end=" ")
             for cell in row:
-                if isinstance(cell.letter, Tile):
-                    # Si hay una letra asignada a la celda
-                    if cell.letter is not None:
-                        if len(cell.letter.letter) == 1:
-                            formatted_row.append(
-                                f"{Fore.GREEN}|   {Fore.YELLOW}{cell.letter.letter}{cell.letter.value:2d}   ")
-                        else:
-                            formatted_row.append(
-                                f"{Fore.GREEN}|  {Fore.YELLOW}{cell.letter.letter}{cell.letter.value:2d}   ")
-                # Si hay multiplicadores
-                elif cell.multiplier != 1:
-                    formatted_row.append(f"{Fore.CYAN}| x{(cell.multiplier)}{cell.multiplier_type :^6}")
+                if cell.letter:
+                    print(f"| {cell.letter.letter} {cell.letter.value} ", end="")
                 else:
-                    formatted_row.append(f"{Fore.GREEN}|{Fore.WHITE:^14}")
-            formatted_row.append(Fore.GREEN + "|")
-            print("".join(formatted_row))
-            print(Fore.GREEN + "+---------" * 15 + "+")
-        print()
+                    if cell.multiplier_type == "word":
+                        print(f"| {cell.multiplier}W  ", end="")
+                    elif cell.multiplier_type == "letter":
+                        print(f"| {cell.multiplier}L  ", end="")
+                    else:
+                        print("|     ", end="")
+            print()
+
 

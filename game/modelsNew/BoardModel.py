@@ -68,7 +68,9 @@ class Board:
         return ([letter for letter in full_word])
 
     # Tile tiene que llegar ordenado de como va en la palabra
-    def addTilesToBoard(self, letterToPlay, row, column, direction, board, playedWord):
+    # [row, column, direction] -> specs
+    def addTilesToBoard(self, letterToPlay, specs, board, playedWord):
+        row, column, direction = specs
         lenWord = len(playedWord)
         if direction == 'h':
             for i in range(lenWord):
