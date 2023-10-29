@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 
-dictionary_path = "./modelsNew/dictionary.txt"
+dictionary_path = "game/modelsNew/dictionary.txt"
 
 with open(dictionary_path, "r") as file:
     dictionary = set(word.strip() for word in file)

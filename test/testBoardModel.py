@@ -34,8 +34,8 @@ class TestBoardModel(unittest.TestCase):
         ("AAAA", 0, 0, 'h', True),
         ("AAAA", 8, 0, 'h', False),
         ("AAAA", 0, 8, 'v', False),
-        ("AAAA", 14, 0, 'v', "La palabra AAAA no puede ser jugada en la posición con la orientación v porque no hay espacio suficiente"),
-        ("AAAA", 0, 14, 'h', "La palabra AAAA no puede ser jugada en la posición con la orientación h porque no hay espacio suficiente"),
+        ("AAAA", 14, 0, 'v', False),
+        ("AAAA", 0, 14, 'h', False),
     ])
     def test_check_if_word_can_be_placed(self, word, row, column, direction, response):
         self.assertEqual(self.board.checkIfWordCanBePlaced(word, row, column, direction), response)
