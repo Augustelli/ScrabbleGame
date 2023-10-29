@@ -27,26 +27,36 @@ class Board:
         else:
             self.board[row][column].letter = tile
 
-    def checkIfWordCanBePlaced(self, word, row, column, direction):
+    def checkCanBePlacedHorizontal(self, word, row, column):
         len_word_to_be_played = len(word)
+        if column + (len_word_to_be_played - 1) <= 14:
+            for i in range(len_word_to_be_played):
+                if self.board[row][column + i].letter is not None:
+                    return True
+                elif i == len_word_to_be_played - 1:
+                    return False
+        else:
+            return False
+
+    def checkCanBePlacedVertical(self,word, row, column):
+        len_word_to_be_played = len(word)
+        if row + (len_word_to_be_played - 1) <= 14:
+            for i in range(len_word_to_be_played):
+                if self.board[row + i][column].letter is not None:
+                    return True  # noqa
+                elif i == len_word_to_be_played - 1:
+                    return False
+        else:
+            return False
+    def checkIfWordCanBePlaced(self, word, row, column, direction):
         if direction == "h":
-            if column + (len_word_to_be_played - 1) <= 14:
-                for i in range(len_word_to_be_played):
-                    if self.board[row][column + i].letter is not None:
-                        return True  # noqa
-                    elif i == len_word_to_be_played - 1:
-                        return False
-            else:
-                return f"La palabra {word} no puede ser jugada en la posición con la orientación {direction} porque no hay espacio suficiente"  # noqa
+            if self.checkCanBePlacedHorizontal(word, row, column) is False:
+                print("Posicion prohibida")
+                return False
         elif direction == "v":
-            if row + (len_word_to_be_played - 1) <= 14:
-                for i in range(len_word_to_be_played):
-                    if self.board[row + i][column].letter is not None:
-                        return True  # noqa
-                    elif i == len_word_to_be_played - 1:
-                        return False
-            else:
-                return f"La palabra {word} no puede ser jugada en la posición con la orientación {direction} porque no hay espacio suficiente"  # noqa
+            if self.checkCanBePlacedVertical(word, row, column) is False:
+                print("Posicion prohibida")
+                return False
     def getLettersInRowColumn(self, position, orientation):
         letters = ""
         x, y = position
@@ -114,7 +124,7 @@ class Board:
         for i in range(lengWord):
             cell = board.board[row+i][column]
             points, multiplier = board.calculateLettersPoints(cell, multiplier, points)
-        return  points*multiplier
+        return points*multiplier
 
     def calculateWordPoints(self, position, direction, board, lengWord):
         points = 0

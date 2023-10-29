@@ -123,17 +123,30 @@ class Scrabble(object):
 
     def showBoard(self):
         for i, row in enumerate(self.board.board, start=1):
-            print(f"{i:2d} ", end=" ")
-            for cell in row:
-                if cell.letter:
-                    print(f"| {cell.letter.letter} {cell.letter.value} ", end="")
-                else:
-                    if cell.multiplier_type == "word":
-                        print(f"| {cell.multiplier}W  ", end="")
-                    elif cell.multiplier_type == "letter":
-                        print(f"| {cell.multiplier}L  ", end="")
-                    else:
-                        print("|     ", end="")
-            print()
+            self.printRowNumber(i)
+            self.printCells(row)
+
+    def printRowNumber(self, row_number):
+        print(f"{row_number:2d} ", end=" ")
+
+    def printCells(self, cells):
+        for cell in cells:
+            if cell.letter:
+                self.printLetterCell(cell)
+            else:
+                self.printMultiplierCell(cell)
+        print()
+
+    def printLetterCell(self, cell):
+        print(f"| {cell.letter.letter} {cell.letter.value}  ", end="")
+
+    def printMultiplierCell(self, cell):
+        if cell.multiplier_type == "word":
+            print(f"| {cell.multiplier}W   ", end="")
+        elif cell.multiplier_type == "letter":
+            print(f"| {cell.multiplier}L   ", end="")
+        else:
+            print("|      ", end="")
+
 
 
