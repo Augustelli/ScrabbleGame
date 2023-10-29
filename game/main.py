@@ -75,7 +75,6 @@ def main():
             saveScrabble(juego, nombre)
             juego.gameFinished = True
         else:
-
             juego.playWord(accion_ingresada)
             time.sleep(1.5)
         os.system("clear")

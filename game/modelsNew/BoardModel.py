@@ -9,14 +9,16 @@ from .configuration import puntaje_por_letra
 
 class Board:
 
+    def setAttr(self,tipo, valores):
+        for i, j in valores:
+            if i == 7 and j == 7:
+                self.board[i][j].letter = Tile("*", 0)
+            self.board[i][j] = Cell(multiplicadores_valores[tipo], tipo.split("_")[1])
     def __init__(self):
         self.board = [[Cell(1, "") for _ in range(15)] for _ in range(15)]
         init(autoreset=True)
         for tipo, valores in coordenadas_multiplicadores.items():
-            for i, j in valores:
-                if i == 7 and j == 7:
-                    self.board[i][j].letter = Tile("*", 0)
-                self.board[i][j] = Cell(multiplicadores_valores[tipo], tipo.split("_")[1])
+            self.setAttr(tipo, valores)
 
     def getTilesOnCell(self, row, column):
         return self.board[row][column].letter
@@ -50,51 +52,60 @@ class Board:
             return False
     def checkIfWordCanBePlaced(self, word, row, column, direction):
         if direction == "h":
-            if self.checkCanBePlacedHorizontal(word, row, column) is False:
-                print("Posicion prohibida")
-                return False
+            return self.checkCanBePlacedHorizontal(word, row, column) is not False
         elif direction == "v":
-            if self.checkCanBePlacedVertical(word, row, column) is False:
-                print("Posicion prohibida")
-                return False
+            return self.checkCanBePlacedVertical(word, row, column) is not False
+
+    def getLettersInRow(self, letters, row):
+        for i in range(15):
+            if self.board[row][i].letter is not None:
+                letters += self.board[row][i].letter.letter
+            else:
+                letters += "_"
+        return letters
+    def getLettersInColumn(self, letters, column):
+        for i in range(15):
+            if self.board[i][column].letter is not None:
+                letters += self.board[i][column].letter.letter
+            else:
+                letters += "_"
+        return letters
+
+    def formatLettersRowColumn(self, letters, position):
+        word_left = letters[:position[1]][::-1].split("_")[0][::-1]
+        word_right = letters[position[1]:].split("_")[0]
+        return word_left + word_right
     def getLettersInRowColumn(self, position, orientation):
         letters = ""
         x, y = position
         if orientation == "h":
-            for i in range(15):
-                if self.board[x][i].letter is not None:
-                    letters += self.board[x][i].letter.letter
-                else:
-                    letters += "_"
+            letters = self.getLettersInRow(letters, x)
         elif orientation == "v":
-            for i in range(15):
-                if self.board[i][y].letter is not None:
-                    letters += self.board[i][y].letter.letter
-                else:
-                    letters += "_"
-        word_left = letters[:position[1]][::-1].split("_")[0][::-1]
-        word_right = letters[position[1]:].split("_")[0]
-        full_word = word_left + word_right
+            letters = self.getLettersInColumn(letters, y)
+
+        full_word = self.formatLettersRowColumn(letters, position)
         return ([letter for letter in full_word])
+
+    def addTilesToRow(self, letterToPlay, specs, board, playedWord):
+        for i in range(len(playedWord)):
+            if board.getTilesOnCell(specs[0], specs[1] + i) is None:
+                board.addTileOnCell(letterToPlay[0], specs[0], specs[1] + i)
+                letterToPlay.pop(0)
+    def addTilesToColumn(self, letterToPlay, specs, board, playedWord):
+        for i in range(len(playedWord)):
+            if board.getTilesOnCell(specs[0] + i, specs[1]) is None:
+                board.addTileOnCell(letterToPlay[0], specs[0] + i, specs[1])
+                letterToPlay.pop(0)
 
     # Tile tiene que llegar ordenado de como va en la palabra
     # [row, column, direction] -> specs
     def addTilesToBoard(self, letterToPlay, specs, board, playedWord):
         row, column, direction = specs
-        lenWord = len(playedWord)
         if direction == 'h':
-            for i in range(lenWord):
-                if board.getTilesOnCell(row, column + i) is None:
-                    board.addTileOnCell(letterToPlay[0], row, column + i)
-                    letterToPlay.pop(0)
-
+            self.addTilesToRow(letterToPlay, specs, board, playedWord)
         elif direction == 'v':
-            for i in range(lenWord):
-                if board.getTilesOnCell(row + i, column) is None:
-                    board.addTileOnCell(letterToPlay[0], row + i, column)
-                    letterToPlay.pop(0)
-
-        return self.calculateWordPoints([row, column], direction, board, lenWord)
+            self.addTilesToColumn(letterToPlay, specs, board, playedWord)
+        return self.calculateWordPoints([row, column], direction, board, len(playedWord))
 
     def calculateLettersPoints(self, cell, multiplier, points):
         if (cell.multiplier_type == "word") and (cell.used is False):

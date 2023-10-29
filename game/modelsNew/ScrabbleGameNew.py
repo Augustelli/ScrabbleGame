@@ -54,25 +54,25 @@ class Scrabble(object):
         if wordCanBePlaced is not True:
             print("La palabra no cabe en el tablero")
             return False
-        tilesOnBoard = self.board.getLettersInRowColumn((row, column), direction)
-        playerWordTiles=self.current_player.rack.returnTiles(playedWord)
+        tilesOnBoard = [Tile(letter,puntaje_por_letra[letter]) for letter in self.board.getLettersInRowColumn((row, column), direction)]
+        playerWordTiles = self.current_player.rack.returnTiles(playedWord)
         tilesPlayedWord = [Tile(letter, puntaje_por_letra[letter]) for letter in playedWord.upper()]
         lettersToPlay = []
+        missingLetters = tilesPlayedWord.copy()
 
-        if len(tilesOnBoard) != 0:
-            for letter in tilesOnBoard:
-                for i in range(len(tilesOnBoard)):
-                    if letter == tilesPlayedWord[i].letter:
-                        tilesPlayedWord.pop(i)
-                        break
+        for letter in tilesOnBoard:
+            if letter in tilesPlayedWord:
+                missingLetters.remove(letter)
 
         for letter in tilesPlayedWord:
             if letter in playerWordTiles:
                 lettersToPlay.append(letter)
                 playerWordTiles.remove(letter)
+                missingLetters.remove(letter)
 
         self.current_player.rack.addTiles(playerWordTiles)
-        if not tilesPlayedWord:
+        if missingLetters:
+            print("No tiene las fichas necesarias para jugar la palabra.")
             return False
         # Poner las fichas en el tablero
         self.current_player.points += self.board.addTilesToBoard(lettersToPlay, [row, column, direction], self.board, playedWord)
