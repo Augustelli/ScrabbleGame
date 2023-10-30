@@ -59,5 +59,26 @@ class TestRack(unittest.TestCase):
         self.rack.addTileToPlayer()
         self.assertEqual(len(self.rack.tiles), 7)
 
+    def test_change_tiles_with_valid_letters(self):
+        tilebag = TilesBag([Tile('B', 1), Tile('B', 2), Tile('Z', 10), Tile('Z', 10)])
+        rack = Rack(tilebag)
+        rack.tiles = [Tile('A', 1), Tile('B', 2), Tile('C', 3), Tile('D', 4)]
+        dto_cambio = JugadaDto(cambiarFichas=True, tilesACambiar=['A', 'C'])
+        result = rack.changeTiles(dto_cambio)
+
+        self.assertNotIn('A', [tile.letter for tile in rack.tiles])
+        self.assertNotIn('C', [tile.letter for tile in rack.tiles])
+
+        self.assertTrue(result.cambiarFichas)
+
+    def test_change_tiles_with_invalid_letters(self):
+        tilebag = TilesBag([Tile('A', 1), Tile('B', 2), Tile('C', 3)])
+        rack = Rack(tilebag)
+        rack.tiles = [Tile('A', 1), Tile('B', 2), Tile('C', 3)]
+        dto_cambio = JugadaDto(cambiarFichas=True, tilesACambiar=['X'])
+        result = rack.changeTiles(dto_cambio)
+        self.assertEqual(['A', 'B', 'C'], [tile.letter for tile in rack.tiles])
+        self.assertTrue(result.cambiarFichas)
+
 if __name__ == '__main__':
     unittest.main()

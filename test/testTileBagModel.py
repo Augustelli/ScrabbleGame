@@ -30,5 +30,19 @@ class TestTilesBag(unittest.TestCase):
         self.assertTrue(tile1 == tile2)
         self.assertFalse(tile1 == tile3)
 
+    def test_tiles_with_same_letters_are_equal(self):
+        tile1 = Tile('A', 1)
+        tile2 = Tile('A', 2)
+        self.assertEqual(tile1, tile2)
+
+    def test_tiles_with_different_letters_are_not_equal(self):
+        tile1 = Tile('A', 1)
+        tile2 = Tile('B', 1)
+        self.assertNotEqual(tile1, tile2)
+
+    def test_tile_and_non_tile_objects_are_not_equal(self):
+        tile = Tile('A', 1)
+        other_object = 'A'  # Non-Tile object
+        self.assertNotEqual(tile, other_object)
 if __name__ == '__main__':
     unittest.main()

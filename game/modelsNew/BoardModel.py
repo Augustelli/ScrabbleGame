@@ -9,7 +9,7 @@ from .configuration import puntaje_por_letra
 
 class Board:
 
-    def setAttr(self,tipo, valores):
+    def setAttr(self, tipo, valores):
         for i, j in valores:
             if i == 7 and j == 7:
                 self.board[i][j].letter = Tile("*", 0)
@@ -63,13 +63,6 @@ class Board:
             else:
                 letters += "_"
         return letters
-    def getLettersInColumn(self, letters, column):
-        for i in range(15):
-            if self.board[i][column].letter is not None:
-                letters += self.board[i][column].letter.letter
-            else:
-                letters += "_"
-        return letters
 
     def formatLettersRowColumn(self, letters, position):
         word_left = letters[:position[1]][::-1].split("_")[0][::-1]
@@ -79,12 +72,21 @@ class Board:
         letters = ""
         x, y = position
         if orientation == "h":
-            letters = self.getLettersInRow(letters, x)
+            letters = self.getLettersInRowOrColumn(letters, x, is_row=True)
         elif orientation == "v":
-            letters = self.getLettersInColumn(letters, y)
+            letters = self.getLettersInRowOrColumn(letters, y, is_row=False)
 
         full_word = self.formatLettersRowColumn(letters, position)
         return ([letter for letter in full_word])
+
+    def getLettersInRowOrColumn(self, letters, index, is_row=True):
+        for i in range(15):
+            cell = self.board[index][i] if is_row else self.board[i][index]
+            if cell.letter is not None:
+                letters += cell.letter.letter
+            else:
+                letters += "_"
+        return letters
 
     def addTilesToRow(self, letterToPlay, specs, board, playedWord):
         for i in range(len(playedWord)):

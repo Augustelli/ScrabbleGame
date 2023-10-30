@@ -145,5 +145,41 @@ class TestScrabbleNextTurn(unittest.TestCase):
         self.scrabble.tiles_bags.tiles = ["A", "B", "C"]
         self.scrabble.endGame()
         self.assertEqual(self.scrabble.gameFinished, False)
+
+    def test_word_can_be_played_first_play(self):
+        self.scrabble.firstPlay = True
+        self.assertTrue(self.scrabble.wordCanBePlayed("HELLO", 7, 7, "h"))
+        self.assertTrue(self.scrabble.wordCanBePlayed("WORLD", 7, 7, "v"))  # Debería poder colocar "WORLD" en el centro verticalmente
+
+    def test_word_can_be_played_subsequent_play(self):
+        # Prueba si una palabra puede ser jugada en una jugada que no es la primera (firstPlay es False)
+        self.scrabble.firstPlay = False
+        self.scrabble.board.board[7][7].letter = "A"  # Simulamos una letra "A" en el centro del tablero
+        self.assertTrue(self.scrabble.wordCanBePlayed("HELLO", 7, 6, "h"))  # Debería poder colocar "HELLO" hacia la izquierda
+        self.assertFalse(self.scrabble.wordCanBePlayed("WORLD", 7, 11, "h"))  # No debería poder colocar "WORLD" hacia la derecha
+        self.assertTrue(self.scrabble.wordCanBePlayed("HELLO", 6, 7, "v"))  # Debería poder colocar "HELLO" hacia arriba
+        self.assertFalse(self.scrabble.wordCanBePlayed("WORLD", 11, 7, "v"))  # No debería poder colocar "WORLD" hacia abajo
+
+    # def test_checkForMissingTiles_horizontal(self):
+    #     scrabble = Scrabble(2, [Tile("A", 1), Tile("B", 3), Tile("C", 3)])
+    #     scrabble.board.board[7][7].letter = Tile("A", 1)
+    #     scrabble.board.board[7][8].letter = Tile("B", 3)
+    #     lettersToPlay, missingLetters = scrabble.checkForMissingTiles("ABC", 7, 7, "h")
+    #     expected_letters_to_play = [Tile("A", 1), Tile("B", 3)]
+    #     expected_missing_letters = [Tile("C", 3)]
+    #
+    #     self.assertEqual(lettersToPlay, expected_letters_to_play)
+    #     self.assertEqual(missingLetters, expected_missing_letters)
+    #
+    # def test_checkForMissingTiles_vertical(self):
+    #     scrabble = Scrabble(2, ["A", "B", "C"])
+    #     scrabble.board.addTilesToBoard([Tile("A", 1), Tile("B", 3)], [7, 7, "v"], scrabble.board, "AB")
+    #     lettersToPlay, missingLetters = scrabble.checkForMissingTiles("ABC", 9, 7, "v")
+    #     expected_letters_to_play = [Tile("A", 1), Tile("B", 3)]
+    #     expected_missing_letters = [Tile("C", 3)]
+    #
+    #     self.assertEqual(lettersToPlay, expected_letters_to_play)
+    #     self.assertEqual(missingLetters, expected_missing_letters)
+
 if __name__ == '__main__':
     unittest.main()

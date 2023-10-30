@@ -1,4 +1,3 @@
-from colorama import Fore
 from .validate_word_on_rae import validate_word_on_rae
 
 from .BoardModel import Board
@@ -29,32 +28,18 @@ class Scrabble(object):
     # 2 Validar que el jugador tiene las fichas necesarias
     # 3 Validar que la palabra entre en el tablero
     # 4 Calcular puntos
-    def playWord(self, playedWord):
-        if not validate_word_on_rae(playedWord):
-            print("La palabra no existe en la RAE.")
-            return False
-
-        positionAndDirection = input("Ingrese la posición y dirección de la palabra  COLUMNA  FILA  DIRECCIÓN : (ej: 1 1 h): ").split()
-
-        column = int(positionAndDirection[0]) - 1
-        row = int(positionAndDirection[1]) - 1
-        direction = positionAndDirection[2].lower()
-        wordCanBePlaced = True
-        # Corroborar que la palabra entre en el tablero
+    def wordCanBePlayed(self, playedWord, row, column, direction):
         if not self.firstPlay:
             wordCanBePlaced = self.board.checkIfWordCanBePlaced(playedWord, row, column, direction)
         else:
-            if direction == "h":
-                if column + (len(playedWord) - 1) > 14:
-                    wordCanBePlaced = False
-            elif direction == 'v':
-                if row + (len(playedWord) - 1) > 14:
-                    wordCanBePlaced = False #
+            wordCanBePlaced = (
+                    (direction == "h" and column + len(playedWord) - 1 <= 14)
+                    or (direction == "v" and row + len(playedWord) - 1 <= 14)
+            )
+        return wordCanBePlaced
 
-        if wordCanBePlaced is not True:
-            print("La palabra no cabe en el tablero")
-            return False
-        tilesOnBoard = [Tile(letter,puntaje_por_letra[letter]) for letter in self.board.getLettersInRowColumn((row, column), direction)]
+    def checkForMissingTiles(self, playedWord, row, column, direction):
+        tilesOnBoard = [Tile(letter, puntaje_por_letra[letter]) for letter in self.board.getLettersInRowColumn((row, column), direction)]
         playerWordTiles = self.current_player.rack.returnTiles(playedWord)
         tilesPlayedWord = [Tile(letter, puntaje_por_letra[letter]) for letter in playedWord.upper()]
         lettersToPlay = []
@@ -71,6 +56,24 @@ class Scrabble(object):
                 missingLetters.remove(letter)
 
         self.current_player.rack.addTiles(playerWordTiles)
+
+        return lettersToPlay, missingLetters
+    def playWord(self, playedWord):
+        if not validate_word_on_rae(playedWord):
+            print("La palabra no existe en la RAE.")
+            return False
+
+        positionAndDirection = input("Ingrese la posición y dirección de la palabra  COLUMNA  FILA  DIRECCIÓN : (ej: 1 1 h): ").split()
+
+        column = int(positionAndDirection[0]) - 1
+        row = int(positionAndDirection[1]) - 1
+        direction = positionAndDirection[2].lower()
+        wordCanBePlaced = self.wordCanBePlayed(playedWord, row, column, direction)
+        if wordCanBePlaced is False:
+            print("La palabra no cabe en el tablero")
+            return False
+
+        lettersToPlay, missingLetters = self.checkForMissingTiles(playedWord, row, column, direction)
         if missingLetters:
             print("No tiene las fichas necesarias para jugar la palabra.")
             return False
@@ -129,7 +132,7 @@ class Scrabble(object):
     def printRowNumber(self, row_number):
         print(f"{row_number:2d} ", end=" ")
 
-    def printCells(self, cells):
+    def printCells(self, cells) :
         for cell in cells:
             if cell.letter:
                 self.printLetterCell(cell)

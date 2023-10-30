@@ -56,7 +56,6 @@ def main():
     if playedGame is not False:
         juego = playedGame
         print("Partida cargada correctamente.")
-        time.sleep(1)
         os.system("clear")
     else:
         num_players = get_num_players()
@@ -76,7 +75,6 @@ def main():
             juego.gameFinished = True
         else:
             juego.playWord(accion_ingresada)
-            time.sleep(1.5)
         os.system("clear")
         juego.endGame()
 

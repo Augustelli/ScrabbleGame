@@ -80,5 +80,34 @@ class TestBoardModel(unittest.TestCase):
         points, multiplier = self.board.calculateLettersPoints(cell, multiplier, points)
         expected_points = 1
         self.assertEqual(points, expected_points)
+
+    class TestBoardLettersInRowColumn(unittest.TestCase):
+        def setUp(self):
+            self.board = Board()
+
+        def test_get_letters_in_row_empty(self):
+            row = 0
+            letters = ""
+            result = self.board.getLettersInRow(letters, row)
+            self.assertEqual(result, "_______________")
+
+        def test_get_letters_in_row_with_letters(self):
+            row = 0
+            letters = ""
+            self.board.board[row][0].letter = Tile("A", 1)
+            self.board.board[row][3].letter = Tile("B", 2)
+            self.board.board[row][8].letter = Tile("C", 3)
+            result = self.board.getLettersInRow(letters, row)
+            self.assertEqual(result, "A___B____C______")
+
+        def test_get_letters_in_row_with_mixed(self):
+            row = 0
+            letters = ""
+            self.board.board[row][2].letter = Tile("A", 1)
+            self.board.board[row][6].letter = Tile("B", 2)
+            self.board.board[row][12].letter = Tile("C", 3)
+            result = self.board.getLettersInRow(letters, row)
+            self.assertEqual(result, "__A___B____C___")
+
 if __name__ == '__main__':
     unittest.main()
