@@ -1,8 +1,5 @@
 import unittest
 from game.modelsNew.validate_word_on_rae import validate_word_on_rae
-from unittest.mock import patch
-import requests
-
 
 class TestValidateWordOnRae(unittest.TestCase):
 

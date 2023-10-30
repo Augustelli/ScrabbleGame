@@ -2,7 +2,6 @@ import pdb
 import unittest
 from unittest.mock import patch
 
-from game.modelsNew.ScrabbleGameNew import Scrabble
 from game.modelsNew.TileModel import Tile
 from game.modelsNew.configuration import puntaje_por_letra, cantidad_de_fichas_por_letra
 
