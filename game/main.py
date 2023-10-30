@@ -81,8 +81,9 @@ def main():
         elif action == "change":
             change_tiles(juego)
         elif action == "save":
-            saveScrabble(juego)
-            break  # Terminar el juego
+            nombrePartida = input("Ingrese el nombre de la partida a guardar: ")
+            saveScrabble(juego, nombrePartida)
+            break
         else:
             juego.playWord(action)
         clear_screen()

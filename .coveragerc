@@ -3,7 +3,6 @@ omit =
     game
     test*.py
     */__init__.py
-    */JugadaDTO/*
 
 [report]
 exclude_lines =
