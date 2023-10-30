@@ -1,3 +1,4 @@
+import os
 import redis
 import pickle
 
@@ -5,7 +6,8 @@ from game.modelsNew.ScrabbleGameNew import Scrabble
 
 
 def saveScrabble(scrabble, nombre_partida):
-    redis_client = redis.StrictRedis(host='redis', port=6379, db=0)
+    redis_host = os.environ.get('REDIS_HOST', 'localhost')
+    redis_client = redis.StrictRedis(host=redis_host, port=6379, db=0)
 
     clave_partida = f'scrabble_{nombre_partida}'
     scrabble_serializado = pickle.dumps(scrabble)

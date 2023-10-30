@@ -11,6 +11,7 @@ services:
       - my_network
     environment:
       - REDIS_HOST=redis
+    tty: true
 
   redis:
     image: redis
