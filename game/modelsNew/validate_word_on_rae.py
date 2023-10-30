@@ -1,6 +1,3 @@
-import requests
-from bs4 import BeautifulSoup
-
 dictionary_path = "game/modelsNew/dictionary.txt"
 
 with open(dictionary_path, "r") as file:
