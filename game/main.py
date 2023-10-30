@@ -1,3 +1,5 @@
+import pdb
+
 from game.redisModule.redis import returnOrCreatePlay, saveScrabble
 from game.modelsNew.ScrabbleGameNew import Scrabble
 from game.modelsNew.TileModel import Tile
@@ -64,6 +66,7 @@ def main():
         set_player_names(juego, num_players, player_names)
     while not juego.gameFinished:
         display_info(juego)
+        pdb.set_trace()
         accion_ingresada = input("Ingrese una acción: ").lower()
         if accion_ingresada == "skip" or accion_ingresada == "":
             juego.passTurn()

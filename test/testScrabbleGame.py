@@ -31,7 +31,6 @@ class TestScrabbleMessages(unittest.TestCase):
         # Ejecuta el método showPlayerPoints del juego
         self.game.showPlayerPoints()
 
-        # Captura la salida generada y comprueba si es la esperada
         output = mock_stdout.getvalue()
         expected_output = "Puntajes:\n -> Jugador1: 15 pts\n -> Jugador2: 20 pts\n\n"
         self.assertEqual(output, expected_output)
@@ -39,6 +38,31 @@ class TestScrabbleMessages(unittest.TestCase):
         self.game.setPlayerName("NAME", 0)
         self.assertEqual(self.game.players[0].name, "NAME")
 
+    def test_word_passes_center_horizontal(self):
+        # Word starts at the center (7, 7) horizontally
+        self.scrabble = Scrabble(2, tilesTesting)
+        result = self.scrabble.wordPassesCenter("HELLO", 7, 7, "h")
+        self.assertTrue(result)
+
+    def test_word_passes_center_horizontal_not_centered(self):
+        self.scrabble = Scrabble(2, tilesTesting)
+        result = self.scrabble.wordPassesCenter("PYTHON", 7, 7, "h")
+        self.assertTrue(result)
+
+    def test_word_passes_center_vertical(self):
+        self.scrabble = Scrabble(2, tilesTesting)
+        result = self.scrabble.wordPassesCenter("WORLD", 7, 7, "v")
+        self.assertTrue(result)
+
+    def test_word_passes_center_vertical_not_centered(self):
+        self.scrabble = Scrabble(2, tilesTesting)
+        result = self.scrabble.wordPassesCenter("SCRABBLE", 7, 7, "v")
+        self.assertTrue(result)
+
+    def test_word_does_not_pass_center(self):
+        self.scrabble = Scrabble(2, tilesTesting)
+        result = self.scrabble.wordPassesCenter("PYTHON", 3, 3, "h")
+        self.assertFalse(result)
 
 
 if __name__ == '__main__':

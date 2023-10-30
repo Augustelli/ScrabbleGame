@@ -24,17 +24,30 @@ class Scrabble(object):
     def setPlayerName(self, name, index):
         self.players[index].name = name
 
+    def wordPassesCenter(self,word, start_row, start_column, direction):
+        center_row, center_column = 7, 7
+        if direction == 'h':
+            if (start_row <= center_row < start_row + len(word)) and (start_column == 7):
+                return True
+        elif direction == 'v':
+            if (start_column <= center_column < start_column + len(word)) and (start_row == 7):
+                return True
+        return False
+
     # 1 Validar palabra RAE
     # 2 Validar que el jugador tiene las fichas necesarias
     # 3 Validar que la palabra entre en el tablero
     # 4 Calcular puntos
     def wordCanBePlayed(self, playedWord, row, column, direction):
+
         if not self.firstPlay:
             wordCanBePlaced = self.board.checkIfWordCanBePlaced(playedWord, row, column, direction)
         else:
+
             wordCanBePlaced = (
-                    (direction == "h" and column + len(playedWord) - 1 <= 14)
-                    or (direction == "v" and row + len(playedWord) - 1 <= 14)
+                   ( (direction == "h" and column + len(playedWord) - 1 <= 14)
+                    or (direction == "v" and row + len(playedWord) - 1 <= 14)) and
+                    self.wordPassesCenter(playedWord, row, column, direction)
             )
         return wordCanBePlaced
 
@@ -100,7 +113,7 @@ class Scrabble(object):
     def changeTiles(self):
         self.skippedTimes = 0
         while True:
-            result = self.current_player.changeTiles()
+            result = self.current_player.exchangeTiles()
             if result is not False:
                 self.nextTurn()
                 break

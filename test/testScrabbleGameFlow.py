@@ -1,5 +1,6 @@
 import unittest
 
+from game.modelsNew.PlayerModel import Player
 from game.modelsNew.ScrabbleGameNew import Scrabble
 from game.modelsNew.TileModel import Tile
 from game.modelsNew.configuration import puntaje_por_letra, cantidad_de_fichas_por_letra
@@ -24,6 +25,12 @@ class TestScrabbleGameFlow(unittest.TestCase):
         self.scrabble.passTurn()
         new_skipped_times = self.scrabble.skippedTimes
         self.assertEqual(new_skipped_times, initial_skipped_times + 1)
+
+    # def test_end_game_all_skip(self):
+    #     self.scrabble.players = [Player("Jugador1", self.tiles_bag), Player("Jugador2", self.tiles_bag)]
+    #     self.scrabble.skippedTimes = 4
+    #     self.scrabble.endGame()
+    #     self.assertTrue(self.scrabble.gameFinished)
 
 if __name__ == '__main__':
     unittest.main()
