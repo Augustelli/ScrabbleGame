@@ -14,7 +14,6 @@ class Board:
             self.board[i][j] = Cell(multiplicadores_valores[tipo], tipo.split("_")[1])
     def __init__(self):
         self.board = [[Cell(1, "") for _ in range(15)] for _ in range(15)]
-        init(autoreset=True)
         for tipo, valores in coordenadas_multiplicadores.items():
             self.setAttr(tipo, valores)
 
