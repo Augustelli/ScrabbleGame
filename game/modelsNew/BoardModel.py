@@ -1,9 +1,7 @@
-import pdb
 
 from .configuration import coordenadas_multiplicadores, multiplicadores_valores
 from .CellModel import Cell
 from .TileModel import Tile
-from colorama import init
 from .configuration import puntaje_por_letra
 
 
