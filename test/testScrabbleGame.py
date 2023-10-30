@@ -1,3 +1,4 @@
+import pdb
 import unittest
 from game.modelsNew.TileModel import Tile
 from game.modelsNew.configuration import puntaje_por_letra, cantidad_de_fichas_por_letra
@@ -63,6 +64,34 @@ class TestScrabbleMessages(unittest.TestCase):
         self.scrabble = Scrabble(2, tilesTesting)
         result = self.scrabble.wordPassesCenter("PYTHON", 3, 3, "h")
         self.assertFalse(result)
+
+    def test_check_missing_tiles(self):
+        lettersToPlay, missingLetters = self.game.checkForMissingTiles("BEE", 7, 7, "h")
+        self.assertEqual(lettersToPlay, [Tile("B", 3), Tile("E", 1)])
+        self.assertEqual(missingLetters, [Tile("E", 1)])
+    def test_no_missing_tiles(self):
+        lettersToPlay, missingLetters = self.game.checkForMissingTiles("BE", 7, 7, "h")
+        self.assertEqual(lettersToPlay, [Tile("B", 3), Tile("E", 1)])
+        self.assertEqual(missingLetters, [])
+
+    def test_check_missing_tiles_vertically(self):
+        lettersToPlay, missingLetters = self.game.checkForMissingTiles("BEE", 7, 7, "v")
+        self.assertEqual(lettersToPlay, [Tile("B", 3), Tile("E", 1)])
+        self.assertEqual(missingLetters, [Tile("E", 1)])
+    def test_no_missing_tiles_vertically(self):
+        lettersToPlay, missingLetters = self.game.checkForMissingTiles("BE", 7, 7, "v")
+        self.assertEqual(lettersToPlay, [Tile("B", 3), Tile("E", 1)])
+        self.assertEqual(missingLetters, [])
+
+    @patch('builtins.input', side_effect="A G F")
+    def test_change_tiles_successful(self, mock_input):
+        self.scrabble = Scrabble(2, tilesTesting)
+        self.scrabble.current_player = self.scrabble.players[0]
+        self.scrabble.current_player_index = 0
+        self.scrabble.skippedTimes = 1
+        self.scrabble.changeTiles()
+        self.assertEqual(self.scrabble.skippedTimes, 0)
+        self.assertEqual(self.scrabble.current_player_index, 1)
 
 
 if __name__ == '__main__':

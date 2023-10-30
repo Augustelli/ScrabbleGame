@@ -1,3 +1,5 @@
+import pdb
+
 from .validate_word_on_rae import validate_word_on_rae
 
 from .BoardModel import Board
@@ -59,7 +61,7 @@ class Scrabble(object):
         missingLetters = tilesPlayedWord.copy()
 
         for letter in tilesOnBoard:
-            if letter in tilesPlayedWord:
+            if letter in missingLetters:
                 missingLetters.remove(letter)
 
         for letter in tilesPlayedWord:
@@ -69,7 +71,6 @@ class Scrabble(object):
                 missingLetters.remove(letter)
 
         self.current_player.rack.addTiles(playerWordTiles)
-
         return lettersToPlay, missingLetters
     def playWord(self, playedWord):
         if not validate_word_on_rae(playedWord):

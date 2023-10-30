@@ -57,29 +57,6 @@ class TestScrabbleNextTurn(unittest.TestCase):
         self.assertTrue(self.scrabble.wordCanBePlayed("HELLO", 6, 7, "v"))  # Debería poder colocar "HELLO" hacia arriba
         self.assertFalse(self.scrabble.wordCanBePlayed("WORLD", 11, 7, "v"))  # No debería poder colocar "WORLD" hacia abajo
 
-    # def test_checkForMissingTiles_horizontal(self):
-    #     scrabble = Scrabble(2, [Tile("A", 1), Tile("B", 3), Tile("C", 3)])
-    #     scrabble.board.board[7][7].letter = Tile("A", 1)
-    #     scrabble.board.board[7][8].letter = Tile("B", 3)
-    #     scrabble.current_player.rack.tiles = [Tile("A", 3), Tile("B", 3)]
-    #     lettersToPlay, missingLetters = scrabble.checkForMissingTiles("ABC", 7, 7, "h")
-    #     expected_letters_to_play = [Tile("A", 3), Tile("B", 3)]
-    #     expected_missing_letters = []
-    #
-    #     self.assertEqual(lettersToPlay, expected_letters_to_play)
-    #     self.assertEqual(missingLetters, expected_missing_letters)
-    #
-    # def test_checkForMissingTiles_vertically(self):
-    #     scrabble = Scrabble(2, [Tile("A", 1), Tile("B", 3), Tile("C", 3)])
-    #     scrabble.board.board[7][7].letter = Tile("A", 1)
-    #     scrabble.board.board[8][7].letter = Tile("B", 3)
-    #     scrabble.current_player.rack.tiles = [Tile("A", 3), Tile("B", 3)]
-    #     lettersToPlay, missingLetters = scrabble.checkForMissingTiles("ABC", 7, 7, "v")
-    #     expected_letters_to_play = [Tile("A", 3), Tile("B", 3)]
-    #     expected_missing_letters = []
-    #
-    #     self.assertEqual(lettersToPlay, expected_letters_to_play)
-    #     self.assertEqual(missingLetters, expected_missing_letters)
 
 if __name__ == '__main__':
     unittest.main()

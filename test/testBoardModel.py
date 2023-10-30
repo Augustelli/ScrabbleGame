@@ -1,4 +1,3 @@
-import pdb
 import unittest
 import parameterized
 from game.modelsNew.BoardModel import Board
@@ -58,7 +57,6 @@ class TestBoardModel(unittest.TestCase):
         self.assertEqual(score, expected_score)
 
     def test_addTilesToBoard_vertical(self):
-        # Configura un caso de prueba con orientación vertical.
         self.board = Board()
         letterToPlay = [Tile("A", 1), Tile("A", 1), Tile("A", 1)]  # Lista ordenada como se juegan las fichas.
         self.board.addTilesToBoard(letterToPlay, [2, 5, "v"], self.board, "AAA")
@@ -74,14 +72,27 @@ class TestBoardModel(unittest.TestCase):
         self.assertEqual(points, expected_points)
 
     def test_calculateLettersPoints(self):
-        # Verifica si se calculan correctamente los puntos de una celda.
         cell = self.board.board[0][0]
         multiplier = 1
         points = 0
         points, multiplier = self.board.calculateLettersPoints(cell, multiplier, points)
         expected_points = 1
         self.assertEqual(points, expected_points)
-#
-#
-# if __name__ == '__main__':
-#     unittest.main()
+    def test_checkCanBePlacedHorizontal_last_character(self):
+        # Prueba cuando el último carácter se encuentra en el tablero.
+        word = "SCRABBLE"
+        row = 15
+        column = 15  # El último carácter 'E' de 'SCRABBLE'
+        result = self.board.checkCanBePlacedHorizontal(word, row, column)
+        self.assertFalse(result)
+
+    def test_checkCanBePlacedVertical_last_character(self):
+        word = "BINGO"
+        row = 15
+        column = 15
+        result = self.board.checkCanBePlacedVertical(word, row, column)
+        self.assertFalse(result)
+
+
+if __name__ == '__main__':
+     unittest.main()
