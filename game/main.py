@@ -15,11 +15,16 @@ redis_client = redis.StrictRedis(host='localhost', port=6379, db=0)
 def get_num_players():
     while True:
         num_players = input("Seleccione la cantidad de jugadores (2-4): ")
-        if num_players.isdigit():
-            num_players = int(num_players)
-            if 2 <= num_players <= 4:
-                return num_players
+        if is_valid_num_players(num_players):
+            return int(num_players)
         print("Ingrese un número válido (2-4).")
+
+def is_valid_num_players(num_players):
+    if num_players.isdigit():
+        num_players = int(num_players)
+        if 2 <= num_players <= 4:
+            return True
+    return False
 
 
 def get_player_names(num_players):
@@ -50,36 +55,44 @@ def set_player_names(juego, num_players, player_names):
     time.sleep(1)
     os.system("clear")
 
+def load_or_create_game(play_name):
+    if play_name:
+        played_game = returnOrCreatePlay(play_name)
+        if played_game:
+            print("Partida cargada correctamente.")
+            return played_game
+    num_players = get_num_players()
+    player_names = get_player_names(num_players)
+    juego = Scrabble(num_players, tiles)
+    set_player_names(juego, num_players, player_names)
+    return juego
 
+def clear_screen():
+    os.system("clear")
 def main():
     print("¡Bienvenido a Scrabble!")
-    playName = input("¿Tenes una partida guardada? retomala con su nombre, sino presiona ENTER: ")
-    playedGame = returnOrCreatePlay(playName)
-    if playedGame is not False:
-        juego = playedGame
-        print("Partida cargada correctamente.")
-        os.system("clear")
-    else:
-        num_players = get_num_players()
-        player_names = get_player_names(num_players)
-        juego = Scrabble(num_players, tiles)
-        set_player_names(juego, num_players, player_names)
+    play_name = input("¿Tienes una partida guardada? Retómala con su nombre, sino presiona ENTER: ")
+    juego = load_or_create_game(play_name)
     while not juego.gameFinished:
         display_info(juego)
-        pdb.set_trace()
-        accion_ingresada = input("Ingrese una acción: ").lower()
-        if accion_ingresada == "skip" or accion_ingresada == "":
+        action = input("Ingrese una acción: ").lower()
+        if action == "skip" or action == "":
             juego.passTurn()
-        elif accion_ingresada == "change":
+        elif action == "change":
             change_tiles(juego)
-        elif accion_ingresada == "save":
-            nombre = input("Ingrese el nombre para guardar la partida: ")
-            saveScrabble(juego, nombre)
-            juego.gameFinished = True
+        elif action == "save":
+            saveScrabble(juego)
+            break  # Terminar el juego
         else:
-            juego.playWord(accion_ingresada)
-        os.system("clear")
+            juego.playWord(action)
+        clear_screen()
         juego.endGame()
+
+
+
+if __name__ == "__main__":
+    main()
+
 
 
 if __name__ == "__main__":
