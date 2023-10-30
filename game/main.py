@@ -1,7 +1,7 @@
 from game.redisModule.redis import returnOrCreatePlay, saveScrabble
-from modelsNew.ScrabbleGameNew import Scrabble
-from modelsNew.TileModel import Tile
-from modelsNew.configuration import puntaje_por_letra, cantidad_de_fichas_por_letra
+from game.modelsNew.ScrabbleGameNew import Scrabble
+from game.modelsNew.TileModel import Tile
+from game.modelsNew.configuration import puntaje_por_letra, cantidad_de_fichas_por_letra
 import os
 import time
 import redis

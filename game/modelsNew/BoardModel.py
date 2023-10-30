@@ -56,14 +56,6 @@ class Board:
         elif direction == "v":
             return self.checkCanBePlacedVertical(word, row, column) is not False
 
-    def getLettersInRow(self, letters, row):
-        for i in range(15):
-            if self.board[row][i].letter is not None:
-                letters += self.board[row][i].letter.letter
-            else:
-                letters += "_"
-        return letters
-
     def formatLettersRowColumn(self, letters, position):
         word_left = letters[:position[1]][::-1].split("_")[0][::-1]
         word_right = letters[position[1]:].split("_")[0]

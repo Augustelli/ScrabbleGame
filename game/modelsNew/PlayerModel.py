@@ -30,3 +30,6 @@ class Player:
 
     def addTiles(self):
         self.rack.addTileToPlayer()
+
+    def getTilesOnRack(self):
+        return self.rack.getTilesOnRack()
