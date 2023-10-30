@@ -1,4 +1,3 @@
-import pdb
 
 from game.redisModule.redis import returnOrCreatePlay, saveScrabble
 from game.modelsNew.ScrabbleGameNew import Scrabble
