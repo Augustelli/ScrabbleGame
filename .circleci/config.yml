@@ -39,16 +39,18 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: docker:20.10.12
+      - image: alpine:latest
     steps:
       - checkout
+      - run:
+          name: Install Dependencies
+          command: |
+            apk update
+            apk add docker
+            apk add py-pip
+            pip install docker-compose
       - setup_remote_docker:
           docker_layer_caching: true
-      - run:
-          name: Install Docker Compose
-          command: |
-            curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-            chmod +x /usr/local/bin/docker-compose
       - run:
           name: Build Docker Image
           command: docker build -t scrabble .
