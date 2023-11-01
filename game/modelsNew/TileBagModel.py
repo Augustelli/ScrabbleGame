@@ -4,7 +4,7 @@ import random
 class TilesBag:
 
     def __init__(self, tiles):
-        self.tiles = list(tiles)
+        self.tiles = (tiles)
         random.shuffle(self.tiles)
 
     def getTiles(self, count):

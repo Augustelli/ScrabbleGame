@@ -1,5 +1,3 @@
-import pdb
-
 from .validate_word_on_rae import validate_word_on_rae
 
 from .BoardModel import Board

@@ -24,21 +24,21 @@ class TestBoardModel(unittest.TestCase):
 
 
     # ### Este test causa que se tarde al cerrar el test "
-    # def test_get_tiles_on_cell(self):
-     # @parameterized.parameterized.expand([("AAAA", 7, 7, 'h', True)])
-    #     ("AAAA", 7, 7, 'v', True),
-    #     ("AAAA", 11, 7, 'v', True),
-    #     ("AAAA", 7, 11, 'h', True),
-    #     ("AAAA", 0, 0, 'v', True),
-    #     ("AAAA", 0, 0, 'h', True),
-    #     ("AAAA", 8, 0, 'h', False),
-    #     ("AAAA", 0, 8, 'v', False),
-    #     ("AAAA", 14, 0, 'v', False),
-    #     ("AAAA", 0, 14, 'h', False),
-    #     ("AAAA", 0, 0, 'h', True),
-
-    #def test_check_if_word_can_be_placed(self, word, row, column, direction, response):
-    #    self.assertEqual(self.board.checkIfWordCanBePlaced(word, row, column, direction), response)
+    @parameterized.parameterized.expand([
+        ("AAAA", 7, 7, 'h', True),
+        ("AAAA", 7, 7, 'v', True),
+        ("AAAA", 11, 7, 'v', True),
+        ("AAAA", 7, 11, 'h', True),
+        ("AAAA", 0, 0, 'v', True),
+        ("AAAA", 0, 0, 'h', True),
+        ("AAAA", 8, 0, 'h', False),
+        ("AAAA", 0, 8, 'v', False),
+        ("AAAA", 14, 0, 'v', False),
+        ("AAAA", 0, 14, 'h', False),
+        ("AAAA", 0, 0, 'h', True)
+     ])
+    def test_check_if_word_can_be_placed(self, word, row, column, direction, response):
+       self.assertEqual(self.board.checkIfWordCanBePlaced(word, row, column, direction), response)
 
 
     @parameterized.parameterized.expand([

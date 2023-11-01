@@ -8,7 +8,6 @@ import time
 import redis
 
 tiles = [Tile(letter, puntaje_por_letra[letter]) for letter, count in cantidad_de_fichas_por_letra.items() for _ in range(count)]
-redis_client = redis.StrictRedis(host='localhost', port=6379, db=0)
 
 
 def get_num_players():
@@ -68,6 +67,7 @@ def load_or_create_game(play_name):
 
 def clear_screen():
     os.system("clear")
+
 def main():
     print("¡Bienvenido a Scrabble!")
     play_name = input("¿Tienes una partida guardada? Retómala con su nombre, sino presiona ENTER: ")
@@ -87,12 +87,6 @@ def main():
             juego.playWord(action)
         clear_screen()
         juego.endGame()
-
-
-
-if __name__ == "__main__":
-    main()
-
 
 
 if __name__ == "__main__":

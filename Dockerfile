@@ -4,9 +4,10 @@ LABEL authors="Augusto Mancuso"
 RUN apk update
 RUN apk add git
 RUN apk add redis
-RUN git clone https://github.com/um-computacion-tm/scrabble-2023-Augustelli.git
+#RUN git clone https://github.com/um-computacion-tm/scrabble-2023-Augustelli.git
 WORKDIR /scrabble-2023-Augustelli
-RUN git checkout nuevoEnfoque
+COPY . .
+#RUN git checkout nuevoEnfoque
 RUN pip install -r requirements.txt
 
 

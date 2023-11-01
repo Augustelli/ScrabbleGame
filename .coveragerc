@@ -1,6 +1,7 @@
 [run]
-omit =
+source=
     game
+omit =
     test*.py
     */__init__.py
 

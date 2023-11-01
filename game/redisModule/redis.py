@@ -2,7 +2,6 @@ import os
 import redis
 import pickle
 
-
 def saveScrabble(scrabble, nombre_partida):
     redis_host = os.environ.get('REDIS_HOST', 'redis')
     redis_client = redis.StrictRedis(host=redis_host, port=6379, db=0)
