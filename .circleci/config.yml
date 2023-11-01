@@ -59,8 +59,17 @@ jobs:
           command: docker build -t scrabble .
       - run:
           name: Start Docker Compose
+          command: docker compose -f 'docker-compose-test.yml' up
+      - run:
+          name: Check Test Results
           command: |
-            docker compose -f 'docker-compose-test.yml' up
-            docker compose -f 'docker-compose-test.yml' down
+            if [ $? -eq 0 ]; then
+              echo "Tests passed successfully. Continuing with the workflow."
+            else
+              echo "Tests failed. Stopping the workflow."
+              exit 1
+            fi
+          when: on_fail
+
             
 
