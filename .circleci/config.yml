@@ -48,11 +48,13 @@ jobs:
             apk update
             apk add docker
             apk add curl
+            apk add python3
+            apk add py3-pip
             DOCKER_CONFIG="${HOME}/.docker"
             mkdir -p "$DOCKER_CONFIG/cli-plugins"
             curl -SL https://github.com/docker/compose/releases/download/v2.23.0/docker-compose-linux-x86_64 -o "$DOCKER_CONFIG/cli-plugins/docker-compose"
             chmod +x "$DOCKER_CONFIG/cli-plugins/docker-compose"
-            pip install coverage
+            pip3 install coverage
       - setup_remote_docker:
           docker_layer_caching: true
       - run:
