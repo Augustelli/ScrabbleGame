@@ -114,9 +114,8 @@ Navigate to the project's root directory.
 Execute the following command to build the Docker image:
 
 ```bash
-docker build -t project-image .
+docker build -t scrabble .
 ```
->Note: Replace project-image with a suitable image name.
 
 2. Running Docker Compose:
 
@@ -124,14 +123,36 @@ With the Docker image ready, the next step is to deploy the application and the 
 Execute the following Docker Compose command:
 
 ```bash
-docker compose up
+docker compose up -d
+
+# Check ID to enter the container
+docker ps -a
+# Enter container with id ex: ced2c597190e
+docker exec -it ced2c597190e sh
 ```
 Note: Ensure that Docker and Docker Compose are installed on your system before proceeding.
 
+3. Ussing the application inside the container
 
-# Autor
-- **Mancuso Augusto Tomás** (62122)
-- Correo electrónico: **a.mancuso@alumno.um.edu.ar**
+Inside the container, while being in the root folder of the project, run the following command to start the application we can
+- Run unittest
+- Run coverage and its report
+- Play the game
+
+```bash
+# To run the tests
+python3 -m unittest
+
+# To run coverage and its report
+coverage run -m unittest && coverage report -m
+
+# To play the game
+python3 -m game.main
+```
+
+# Author
+- **Mancuso Augusto Tomás**
+- Email: **a.mancuso@alumno.um.edu.ar**
 
 ## Estado del Repositorio
 
@@ -143,4 +164,3 @@ Note: Ensure that Docker and Docker Compose are installed on your system before 
 ### Mantenibilidad
 [![Maintainability](https://api.codeclimate.com/v1/badges/8b7b07672b40b37ff06a/maintainability)](https://codeclimate.com/github/um-computacion-tm/scrabble-2023-Augustelli/maintainability)
 
-[![Test Coverage](https://api.codeclimate.com/v1/badges/8b7b07672b40b37ff06a/test_coverage)](https://codeclimate.com/github/um-computacion-tm/scrabble-2023-Augustelli/test_coverage)

@@ -10,7 +10,6 @@ def saveScrabble(scrabble, nombre_partida):
     scrabble_serializado = pickle.dumps(scrabble)
     redis_client.set(clave_partida, scrabble_serializado)
 
-# Función para cargar un objeto Scrabble desde Redis
 def loadScrabble(nombre_partida):
     redis_client = redis.StrictRedis(host='redis', port=6379, db=0)
 

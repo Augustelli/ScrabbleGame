@@ -1,6 +1,8 @@
 # ChanelLog
 # Scrabble Game by Mancuso Augusto Tomás
 ## [Realease 1.0.0] - 1/11/2023
+## Added: DockerFile and compose with redis
+## Fix last details
 
 ## [0.3.9 SNAPSHOT] - 30/10/2023
 
