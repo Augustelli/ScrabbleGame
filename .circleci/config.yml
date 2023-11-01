@@ -47,6 +47,7 @@ jobs:
           command: |
             apk update
             apk add docker
+            apk add redis
             apk add curl
             apk add python3
             apk add py3-pip
