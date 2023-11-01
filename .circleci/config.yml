@@ -22,16 +22,38 @@
 #           command: |
 #               ./cc-test-reporter after-build  12:15
 
+#version: 2.1
+#jobs:
+#  build:
+#    docker:
+#      - image: cimg/python:3.10.1
+#    steps:
+#      - checkout
+#      - run:
+#          name: Install dependencies
+#          command: pip install -r requirements.txt
+#      - run:
+#          name: Running Tests
+#          command: coverage run -m unittest && coverage xml && coverage report -m --omit="*/__init__.py"
 version: 2.1
 jobs:
   build:
     docker:
-      - image: cimg/python:3.10.1
+      - image: docker:20.10.12
     steps:
       - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true
       - run:
-          name: Install dependencies
-          command: pip install -r requirements.txt
+          name: Build Docker Image
+          command: docker build -t my-custom-image -f Dockerfile .
       - run:
           name: Running Tests
-          command: coverage run -m unittest && coverage xml && coverage report -m --omit="*/__init__.py"
+          command: |
+            docker-compose -f docker-compose.test.yml up -d
+            docker-compose -f docker-compose.test.yml exec app coverage run -m unittest
+            docker-compose -f docker-compose.test.yml down
+      - store_artifacts:
+          path: coverage.xml
+          destination: coverage
+
