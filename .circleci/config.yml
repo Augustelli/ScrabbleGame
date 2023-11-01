@@ -46,8 +46,8 @@ jobs:
           docker_layer_caching: true
       - run:
           name: Build Docker Image
-          command: docker build -t my-custom-image -f Dockerfile .
+          command: docker build -t scrabble .
       - run:
           name: Start Docker Compose
-          command: docker-compose -f docker-compose.test.yml up
+          command: docker-compose -f docker-compose.yml up
 
