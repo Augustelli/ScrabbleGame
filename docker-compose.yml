@@ -1,9 +1,8 @@
 version: '3'
 services:
   app:
-    image: pruebadocker3
-#    build:
-#      context: ./
+    image: ScrabbleGame
+
     ports:
       - "5000:5000"
     depends_on:

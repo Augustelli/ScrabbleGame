@@ -1,6 +1,66 @@
 # ChanelLog
 # Scrabble Game by Mancuso Augusto Tomás
-## [Unreleased]
+## [Realease 1.0.0] - 1/11/2023
+
+## [0.3.9 SNAPSHOT] - 30/10/2023
+
+## Added: Test for all the app
+## Added: DockerFile and compose with redis
+## Fix: Codeclimate issues and dependencies
+
+## [0.3.6 SNAPSHOT] - 29/10/2023
+## FIX:dependencies paths, ISSUES AND CREATE TESTSH
+## Added save plays with redis
+
+
+## [0.3.5 SNAPSHOT] - 28/10/2023
+FIX CC 4
+FIX CC 3
+FIX CC 2
+
+## [0.3.4 SNAPSHOT] 27/10/2023
+
+New test added and fix directory tree
+FIX playWOrd fixed and fully functional
+FIX minor bugs
+TODO fix board get letters on board variable not assign
+new test added
+Refactor of root directory. Looking fordward to clean project
+New config added and fix playword
+
+## [0.3.3 SNAPSHOT] 26/10/2023
+
+## WIP FIX: Multiplay fixed
+
+
+## [0.3.2 SNAPSHOT] - 20/10/2023
+
+## WIP: play word added. Need to implenent play on board
+
+## [0.3.1 SNAPSHOT] - 16/10/2023
+
+## FIX: When changing tiles, no turn passed
+## Added:New interface methods added
+
+## [0.3.0 SNAPSHOT] - 8/10/2023
+
+
+## Added:
+New test added 100% coverage
+New funcitonalyty added
+New intrface
+
+
+## [0.3.0 SNAPSHOT] - 7/10/2023
+## Added:New aproche implemented
+## [0.2.9 SNAPSHOT] - 5/10/2023
+
+## WIP: New schema of playing turns
+
+## [0.2.5 SNAPSHOT] - 2/10/2023
+
+## WIP:  New schema of playing turns
+    
 
 ## [0.2.4 SNAPSHOT]
 ## Refactor
