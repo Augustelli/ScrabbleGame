@@ -1,8 +1,9 @@
 # ChanelLog
-# Scrabble Game by Mancuso Augusto Tomás
+## Scrabble Game by Mancuso Augusto Tomás
 ## [Realease 1.0.0] - 1/11/2023
 ## Added: DockerFile and compose with redis
 ## Fix last details
+## Remove: not used code and commented code
 
 ## [0.3.9 SNAPSHOT] - 30/10/2023
 
@@ -177,6 +178,8 @@ dictionary
 - The basic structure of the project was created
 - All .yml files have been created and completed
 
+[realesed]
+[1.0.0] : https://github.com/um-computacion-tm/scrabble-2023-Augustelli.git
 [unreleased]
 [0.0.2]: https://github.com/um-computacion-tm/scrabble-2023-Augustelli.git
-[0.0.1]: https://github.com/um-computacion-tm/scrabble-2023-Augustelli.git
+[0.0.1]: https://github.com/um-computacion-tm/scrabble-2023-Augustelli.

@@ -7,10 +7,6 @@ With this project, users can relish the fun and challenge of Scrabble without th
 The project is an excellent way to learn Python programming, as it covers various aspects of game development, including user input, data structures, and logical algorithms.
 
 Have fun playing Scrabble on your computer with this project!
-## Screenshots or Examples
-
-![Example 1](screenshot1.png)
-![Example 2](screenshot2.png)
 
 ## How to Play Scrabble
 
@@ -123,7 +119,7 @@ With the Docker image ready, the next step is to deploy the application and the 
 Execute the following Docker Compose command:
 
 ```bash
-docker compose up -d
+docker compose -f 'docker-compose.yml' up -d
 
 # Check ID to enter the container
 docker ps -a
