@@ -1,10 +1,8 @@
 #!/bin/sh
 
-coverage run -m unittest
+coverage run -m unittest && coverage report -m
 
 return_code=$?
-
-coverage report -m
 
 if [ $return_code -eq 0 ]; then
   echo "Tests PASSED"
