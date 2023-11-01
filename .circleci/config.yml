@@ -49,5 +49,5 @@ jobs:
           command: docker build -t scrabble .
       - run:
           name: Start Docker Compose
-          command: docker-compose -f docker-compose.yml up
+          command: docker compose up
 
