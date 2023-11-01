@@ -55,6 +55,8 @@ jobs:
             curl -SL https://github.com/docker/compose/releases/download/v2.23.0/docker-compose-linux-x86_64 -o "$DOCKER_CONFIG/cli-plugins/docker-compose"
             chmod +x "$DOCKER_CONFIG/cli-plugins/docker-compose"
             pip3 install coverage
+            pip3 install parameterized
+            pip3 install redis
       - setup_remote_docker:
           docker_layer_caching: true
       - run:
