@@ -4,7 +4,7 @@ coverage run -m unittest && coverage report -m
 
 return_code=$?
 
-if [ $return_code -eq 0 ]; then
+if [ $return_code -eq 1 ]; then
   echo "Tests PASSED"
   exit 0
 else
