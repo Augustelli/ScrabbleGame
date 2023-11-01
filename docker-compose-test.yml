@@ -12,7 +12,7 @@ services:
       - REDIS_HOST=redis
     stdin_open: true
     tty: true
-    command: /bin/sh -c "coverage run -m unittest && coverage report -m"
+    command: /bin/sh -c "coverage run -m unittest && coverage report -m && exit \${PIPESTATUS[0]}"
   redis:
     image: redis
     ports:
